@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/imageFrameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.ImageQuotesList">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/imageRecyclerList"
+        android:layout_width="match_parent"
+        tools:listitem="@layout/image_quotes_item"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:visibility="invisible"
+        android:id="@+id/imageEmptyList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="Empty List"
+        android:textSize="30sp" />
+</FrameLayout>

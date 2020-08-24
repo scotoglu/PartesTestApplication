@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">TestApp</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="quote_hint">Type Quote.</string>
+    <string name="book_title_hint">Type Book Title.</string>
+    <string name="author_hint">Type Author.</string>
+    <string name="publisher_hint">Type Publisher.</string>
+    <string name="page_of_quote_hint">Type Page Of Quote.</string>
+    <string name="release_date">Type Release Date.</string>
+    <string name="btn_text">Save</string>
+    <string name="page">p</string>
+    <string name="successfull_add">Quote Added Successfully</string>
+    <string name="snackbar_item_remove">Item was removed from list</string>
+</resources>
