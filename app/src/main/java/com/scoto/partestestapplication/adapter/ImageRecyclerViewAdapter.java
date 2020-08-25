@@ -2,13 +2,16 @@ package com.scoto.partestestapplication.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.scoto.partestestapplication.R;
 import com.scoto.partestestapplication.databinding.ImageQuotesItemBinding;
 import com.scoto.partestestapplication.model.Image;
 import com.scoto.partestestapplication.viewmodel.QuoteViewModel;
@@ -16,6 +19,7 @@ import com.scoto.partestestapplication.viewmodel.QuoteViewModel;
 import java.util.List;
 
 public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecyclerViewAdapter.ViewHolder> {
+    private static final String TAG = "ImageRecyclerViewAdapte";
     private Context mContext;
     private List<Image> imageList;
     private QuoteViewModel quoteViewModel;
@@ -66,12 +70,31 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
         notifyItemInserted(pos);
     }
 
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ImageQuotesItemBinding binding;
+        private ImageView delete, srcİmage;
 
         public ViewHolder(ImageQuotesItemBinding imageQuotesItemBinding) {
             super(imageQuotesItemBinding.getRoot());
             this.binding = imageQuotesItemBinding;
+//            delete = imageQuotesItemBinding.getRoot().findViewById(R.id.delete);
+            srcİmage = imageQuotesItemBinding.getRoot().findViewById(R.id.imageView);
+            srcİmage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                }
+            });
+
+//            delete.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Log.d(TAG, "onClick:Delete in Image List ");
+//                    int pos = getAdapterPosition();
+//                }
+//            });
         }
 
         public void bind(Image image) {

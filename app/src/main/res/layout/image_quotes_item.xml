@@ -12,77 +12,107 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/imageCardView"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginTop="5dp"
             android:elevation="15dp"
-            app:cardCornerRadius="15dp"
+            app:cardElevation="0.7dp"
+            app:cardMaxElevation="1dp"
+            app:cardPreventCornerOverlap="true"
+            app:contentPaddingBottom="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/card_back"
                 android:orientation="horizontal">
 
                 <LinearLayout
+                    android:id="@+id/linearImage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="15dp">
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/tag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginRight="0dp"
+                        android:layout_marginBottom="2dp"
+                        android:fontFamily="@font/advent_pro_medium"
+                        android:hint="#TAGTAGTAG"
+                        android:padding="2dp"
+                        android:textColor="#E53935"
+                        android:textSize="16sp" />
 
                     <ImageView
                         android:id="@+id/imageView"
                         setImage="@{imagesQuote.image}"
-                        android:layout_width="250dp"
+                        android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:scaleType="fitCenter"
                         tools:srcCompat="@tools:sample/avatars" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <TextView
+                            android:id="@+id/author"
+                            author="@{imagesQuote.author}"
+                            bookTitle="@{imagesQuote.bookTitle}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginLeft="5dp"
+                            android:fontFamily="@font/advent_pro_medium"
+                            android:hint="Author, Book Title"
+                            android:padding="5dp"
+                            android:textSize="16sp" />
+
+                        <!--                        <TextView-->
+                        <!--                            android:id="@+id/bookTitle"-->
+                        <!--                            android:layout_width="wrap_content"-->
+                        <!--                            android:layout_height="wrap_content"-->
+
+
+                        <!--                            android:hint="Book Title"-->
+                        <!--                            android:padding="5dp"-->
+                        <!--                            android:text="@{imagesQuote.bookTitle}"-->
+                        <!--                            android:textSize="16sp" />-->
+
+
+                        <!--                        <ImageView-->
+                        <!--                            android:id="@+id/delete"-->
+                        <!--                            android:layout_width="wrap_content"-->
+                        <!--                            android:layout_height="wrap_content"-->
+                        <!--                            android:layout_alignParentEnd="true"-->
+                        <!--                            android:layout_margin="5dp"-->
+                        <!--                            android:layout_marginRight="25dp"-->
+                        <!--                            android:padding="5dp"-->
+                        <!--                            android:src="@drawable/ic_delete" />-->
+                    </RelativeLayout>
+
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="25dp">
 
-                    <TextView
-                        android:id="@+id/author"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="Author"
-                        android:padding="5dp"
-                        android:text="@{imagesQuote.author}"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/bookTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="Book Title"
-                        android:padding="5dp"
-                        android:text="@{imagesQuote.bookTitle}"
-                        android:textSize="16sp" />
-
-
-                    <TextView
-                        android:id="@+id/quoteTag"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="Quote Tag"
-                        android:padding="5dp"
-                        android:text="@{imagesQuote.quoteTag}"
-                        android:textSize="16sp" />
-                </LinearLayout>
             </LinearLayout>
+
         </androidx.cardview.widget.CardView>
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 </layout>

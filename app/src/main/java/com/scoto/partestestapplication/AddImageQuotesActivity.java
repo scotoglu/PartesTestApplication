@@ -60,17 +60,19 @@ public class AddImageQuotesActivity extends AppCompatActivity {
         bookTitleTxt = findViewById(R.id.bookTitle);
         saveBtn = findViewById(R.id.saveBtn);
     }
-    private void saveImageQuotes(){
-        if (bitmap != null){
+
+    private void saveImageQuotes() {
+        if (bitmap != null) {
             byte[] imageByte = bm.bitmapToByte(bitmap);
             String author = authorTxt.getText().toString();
             String bookTitle = bookTitleTxt.getText().toString();
             String tag = tagTxt.getText().toString();
 
-            Image image  =new Image(imageByte,author,bookTitle,tag);
+            Image image = new Image(imageByte, author, bookTitle, tag);
 
             quoteViewModel.insertImage(image);
             Toast.makeText(this, "INSERTED IMAGE.", Toast.LENGTH_SHORT).show();
+            finish();
         }
     }
 }

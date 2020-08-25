@@ -9,6 +9,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class BitmapManager {
+    private static final String TAG = "BitmapManager";
 
     public Bitmap byteToBitmap(byte[] image) {
         Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
@@ -41,6 +42,8 @@ public class BitmapManager {
 
     public Bitmap stringToBitmap(String encodedBitmap) throws IllegalArgumentException {
         byte[] decodedBytes = Base64.decode(encodedBitmap.substring(encodedBitmap.indexOf(",") + 1), Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+
+        Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+        return bitmap;
     }
 }

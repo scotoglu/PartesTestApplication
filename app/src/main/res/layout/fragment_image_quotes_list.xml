@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-  android:id="@+id/imageFrameLayout"
+    android:id="@+id/imageFrameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.ImageQuotesList">
@@ -9,16 +9,25 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/imageRecyclerList"
         android:layout_width="match_parent"
-        tools:listitem="@layout/image_quotes_item"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        tools:listitem="@layout/image_quotes_item" />
 
     <TextView
-        android:visibility="invisible"
         android:id="@+id/imageEmptyList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
         android:text="Empty List"
-        android:textSize="30sp" />
+        android:textSize="30sp"
+        android:visibility="invisible" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addImgQuote"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="25dp"
+        android:src="@drawable/ic_outline_add_a_photo_48" />
 </FrameLayout>

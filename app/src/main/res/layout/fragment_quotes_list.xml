@@ -26,35 +26,35 @@
             android:visibility="invisible" />
 
 
+        <!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+        <!--            android:id="@+id/cam"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_above="@+id/addTxt"-->
+        <!--            android:layout_alignParentEnd="true"-->
+
+        <!--            android:layout_marginRight="25dp"-->
+
+
+        <!--            android:src="@drawable/ic_camera_alt_black"-->
+
+
+        <!--            android:visibility="invisible" />-->
+
+        <!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+        <!--            android:id="@+id/addTxt"-->
+        <!--            android:layout_width="wrap_content"-->
+
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_above="@+id/fab"-->
+        <!--            android:layout_alignParentEnd="true"-->
+        <!--            android:layout_marginTop="10dp"-->
+        <!--            android:layout_marginRight="25dp"-->
+        <!--            android:src="@drawable/ic_text_fields_black"-->
+        <!--            android:visibility="invisible" />-->
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/cam"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/addTxt"
-            android:layout_alignParentEnd="true"
-
-            android:layout_marginRight="25dp"
-
-
-            android:src="@drawable/ic_camera_alt_black"
-
-
-            android:visibility="invisible" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/addTxt"
-            android:layout_width="wrap_content"
-
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/fab"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="25dp"
-            android:src="@drawable/ic_text_fields_black"
-            android:visibility="invisible" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
+            android:id="@+id/addTxtQuote"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -62,7 +62,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginRight="25dp"
             android:layout_marginBottom="25dp"
-            android:src="@drawable/ic_add_black" />
+            android:src="@drawable/ic_outline_playlist_add_48" />
 
 
     </RelativeLayout>
