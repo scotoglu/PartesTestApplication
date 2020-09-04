@@ -4,7 +4,6 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,14 +12,13 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.scoto.partestestapplication.AddQuotesActivity;
+import com.scoto.partestestapplication.ui.AddQuotesActivity;
 import com.scoto.partestestapplication.MainActivity;
 import com.scoto.partestestapplication.R;
 import com.scoto.partestestapplication.callback.DiffUtilCallback;
@@ -142,6 +140,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     Intent editIntent = new Intent(mainActivity, AddQuotesActivity.class);
                     editIntent.putExtra("quoteInfo",quoteList.get(getAdapterPosition()));
                     mainActivity.startActivity(editIntent);
+                    //  mainActivity.overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
 
                 }
             });

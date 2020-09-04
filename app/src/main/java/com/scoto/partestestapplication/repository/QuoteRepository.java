@@ -47,12 +47,16 @@ public class QuoteRepository {
         quoteDao.deleteAll();
     }
 
+    public int getQuotesNum() {
+        return quoteDao.getNumOfQuotes();
+    }
+
 
     public LiveData<List<Quote>> getAllQuotes() {
         return allQuotes;
     }
 
-    /*Image CRUD operations in Repository*/
+    /*image CRUD operations in Repository*/
     public LiveData<List<Image>> getAllImages() {
         return allImages;
     }
@@ -73,6 +77,10 @@ public class QuoteRepository {
 
     public void insertImage(Image image) {
         imageDao.insertImage(image);
+    }
+
+    public int getImageQuoteNum() {
+        return imageDao.getNumOfImageQuotes();
     }
 
 }

@@ -49,6 +49,7 @@ public class AddImageQuotes extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         quoteViewModel = ViewModelProviders.of(this).get(QuoteViewModel.class);
         Bundle bundle = new Bundle();
         if (getArguments() != null) {
@@ -61,7 +62,7 @@ public class AddImageQuotes extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_add_image_quotes, container, false);
+        View v = inflater.inflate(R.layout.activity_add_image_quotes, container, false);
 
         imageQuote = v.findViewById(R.id.imageQuote);
         authorTxt = v.findViewById(R.id.author);

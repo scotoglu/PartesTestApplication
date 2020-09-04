@@ -26,7 +26,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
-import com.scoto.partestestapplication.AddImageQuotesActivity;
 import com.scoto.partestestapplication.R;
 import com.scoto.partestestapplication.adapter.ImageRecyclerViewAdapter;
 import com.scoto.partestestapplication.callback.SwipeToDeleteCallback;
@@ -36,8 +35,6 @@ import com.scoto.partestestapplication.viewmodel.QuoteViewModel;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -93,7 +90,7 @@ public class ImageQuotesList extends Fragment {
         addImgQuote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "onClick: Add Image Quote Clicked...");
+                Log.d(TAG, "onClick: Add image Quote Clicked...");
 
                 CropImage.activity().setGuidelines(CropImageView.Guidelines.ON).setAutoZoomEnabled(true)
                         .setCropShape(CropImageView.CropShape.RECTANGLE)
@@ -192,7 +189,7 @@ public class ImageQuotesList extends Fragment {
         Log.d(TAG, "setRecyclerView: setRecyclerView Active ...");
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        viewAdapter = new ImageRecyclerViewAdapter(getContext(), imageList);
+        viewAdapter = new ImageRecyclerViewAdapter(getContext(), imageList, this);
         recyclerView.setHasFixedSize(true);
         recyclerView.scrollToPosition(0);
         recyclerView.setAdapter(viewAdapter);

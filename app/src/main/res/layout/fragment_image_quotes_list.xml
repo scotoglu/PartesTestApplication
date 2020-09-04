@@ -4,23 +4,32 @@
     android:id="@+id/imageFrameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@mipmap/image"
     tools:context=".ui.ImageQuotesList">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/imageRecyclerList"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/image_quotes_item" />
+        android:padding="10dp">
 
-    <TextView
-        android:id="@+id/imageEmptyList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:text="Empty List"
-        android:textSize="30sp"
-        android:visibility="invisible" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/imageRecyclerList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/image_quotes_item" />
+
+        <TextView
+            android:id="@+id/imageEmptyList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Empty List"
+            android:textSize="30sp"
+            android:visibility="invisible" />
+
+
+    </RelativeLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addImgQuote"

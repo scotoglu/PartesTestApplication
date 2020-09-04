@@ -25,12 +25,14 @@ public interface QuoteDao {
     @Query("DELETE FROM quotes")
     void deleteAll();
 
+    @Query("SELECT COUNT(id) FROM quotes")
+    int getNumOfQuotes();
+
     @Update
     void update(Quote... quote);
 
     @Delete
     void delete(Quote quote);
-
 
 
 }

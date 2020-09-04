@@ -64,7 +64,7 @@ public class AddQuotes extends Fragment implements View.OnFocusChangeListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_add_quotes, container, false);
+        View v = inflater.inflate(R.layout.activity_add_quotes, container, false);
         //OnFocus EditText, those ImageViews will be appear/disappear depends.
         quoteImageView = v.findViewById(R.id.quoteImageView);
         authorImageView = v.findViewById(R.id.authorImageView);

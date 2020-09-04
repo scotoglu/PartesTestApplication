@@ -1,4 +1,4 @@
-package com.scoto.partestestapplication;
+package com.scoto.partestestapplication.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,8 +12,11 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.scoto.partestestapplication.R;
 import com.scoto.partestestapplication.model.Quote;
 import com.scoto.partestestapplication.viewmodel.QuoteViewModel;
 
@@ -27,17 +30,26 @@ public class AddQuotesActivity extends AppCompatActivity implements View.OnFocus
     private QuoteViewModel quoteViewModel;
     private Quote passedQuote = null;
     private Bundle quoteObjectBundle;
+    private Dialogs dialogs;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_add_quotes);
+        setContentView(R.layout.activity_add_quotes);
         quoteViewModel = ViewModelProviders.of(this).get(QuoteViewModel.class);
-
         Intent intent = getIntent();
-        if (intent.getParcelableExtra("quoteInfo") != null){
+        if (intent.getParcelableExtra("quoteInfo") != null) {
             passedQuote = intent.getParcelableExtra("quoteInfo");
         }
+
+        Toolbar toolbar = findViewById(R.id.toolbar_add);
+        setSupportActionBar(toolbar);
+
+
+        getSupportActionBar().setTitle("PartesTest");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
         setViewReference();
         setEditTextReference();
         saveBtn = findViewById(R.id.saveBtn);
@@ -49,7 +61,13 @@ public class AddQuotesActivity extends AppCompatActivity implements View.OnFocus
                     Quote data = new Quote(quote, author, bookTitle, pageOfQuote, publisher, releaseDate);
                     quoteViewModel.insert(data);
                     Toast.makeText(getApplicationContext(), "INSERT", Toast.LENGTH_SHORT).show();
+
+                    dialogs = Dialogs.newInstance(null, 1);
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    dialogs.show(ft, Dialogs.TAG);
                     finish();
+
+
                 } else {
                     Quote data = new Quote(
                             quoteTxt.getText().toString(), authorTxt.getText().toString(), bookTitleTxt.getText().toString(),
@@ -60,6 +78,11 @@ public class AddQuotesActivity extends AppCompatActivity implements View.OnFocus
                     quoteViewModel.update(data);
                     Toast.makeText(getApplicationContext(), "UPDATE", Toast.LENGTH_SHORT).show();
 
+                    dialogs = Dialogs.newInstance("Updated", 2);
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    dialogs.show(ft, Dialogs.TAG);
+                    finish();
+
                 }
             }
         });
@@ -67,6 +90,7 @@ public class AddQuotesActivity extends AppCompatActivity implements View.OnFocus
             setDataToFields();
 
     }
+
 
     private void setDataToFields() {
         //When user edit the quotes,set fields with existence data.
@@ -187,5 +211,12 @@ public class AddQuotesActivity extends AppCompatActivity implements View.OnFocus
         params.width = 0;
         params.height = 0;
         v.setLayoutParams(params);
+    }
+
+    @Override
+    public void onBackPressed() {
+        //to hide activity with animation
+        super.onBackPressed();
+
     }
 }

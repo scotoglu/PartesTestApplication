@@ -14,20 +14,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.SettingsActivity"></activity>
+        <activity android:name=".ui.DisplayImageFullScreen" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Theme.AppCompat" />
         <activity
             android:name=".MainActivity"
             android:windowSoftInputMode="adjustPan">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddQuotesActivity" />
-        <activity android:name=".AddImageQuotesActivity"/>
+        <activity
+            android:name=".ui.AddQuotesActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".ui.AddImageQuotesActivity"
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>

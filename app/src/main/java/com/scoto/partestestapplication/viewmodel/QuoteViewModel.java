@@ -46,7 +46,10 @@ public class QuoteViewModel extends AndroidViewModel {
         return allQuotes;
     }
 
-    /*  Image CRUD operations in ViewModel*/
+    public int getQuotesNum() {
+        return repository.getQuotesNum();
+    }
+    /*  image CRUD operations in ViewModel*/
 
     public void deleteAllImages() {
         repository.deleteAllImages();
@@ -66,5 +69,9 @@ public class QuoteViewModel extends AndroidViewModel {
 
     public LiveData<List<Image>> getAllImages() {
         return allImages;
+    }
+
+    public int getImageQuoteNum() {
+        return repository.getImageQuoteNum();
     }
 }

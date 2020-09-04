@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -23,7 +24,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.scoto.partestestapplication.AddQuotesActivity;
 import com.scoto.partestestapplication.R;
 import com.scoto.partestestapplication.adapter.RecyclerViewAdapter;
 import com.scoto.partestestapplication.callback.SwipeToDeleteCallback;
@@ -71,7 +71,7 @@ public class QuotesList extends Fragment {
         emptyList = v.findViewById(R.id.emptyListText);
 
         addTxtQuote = v.findViewById(R.id.addTxtQuote);
-        ;
+
         frameLayout = v.findViewById(R.id.frameLayout);
 
         addTxtQuote.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +79,7 @@ public class QuotesList extends Fragment {
             public void onClick(View v) {
                 Intent addQuoteIntent = new Intent(getActivity(), AddQuotesActivity.class);
                 startActivity(addQuoteIntent);
+
             }
         });
 

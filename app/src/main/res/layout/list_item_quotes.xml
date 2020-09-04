@@ -15,86 +15,93 @@
             type="com.scoto.partestestapplication.helper.StringFormatter" />
     </data>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardViewLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="13dp"
-        android:layout_marginBottom="8dp"
-        android:elevation="8dp"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="8dp">
+    <RelativeLayout
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardViewLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="11dp">
+            android:layout_marginHorizontal="13dp"
+            android:layout_marginTop="8dp"
+            android:elevation="8dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="8dp">
 
-            <LinearLayout
-                android:id="@+id/body"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:background="@drawable/card_back_list_quotes"
+                android:padding="11dp">
 
                 <LinearLayout
+                    android:id="@+id/body"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/font"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/playfair_display"
-                        android:text="@{item.quote}"
-                        android:textSize="18sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/advent_pro_medium"
-                        android:text="@{strFormat.strConcat(item.author,item.releaseDate,item.pageOfQuote)}"
-                        android:textAlignment="textEnd"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/advent_pro_medium"
-                        android:text="@{item.bookTitle}"
-                        android:textAlignment="textEnd"/>
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center">
+                        android:orientation="vertical">
 
-                        <ImageView
-                            android:id="@+id/editQuote"
-                            android:layout_width="wrap_content"
+                        <TextView
+                            android:id="@+id/font"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/ic_edit" />
+                            android:fontFamily="@font/playfair_display"
+                            android:text="@{item.quote}"
+                            android:textSize="18sp" />
 
-                        <ImageView
-
-                            android:id="@+id/shareQuote"
-                            android:layout_width="wrap_content"
+                        <TextView
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="20dp"
-                            android:background="@drawable/ic_share" />
+                            android:fontFamily="@font/advent_pro_medium"
+                            android:text="@{strFormat.strConcat(item.author,item.releaseDate,item.pageOfQuote)}"
+                            android:textAlignment="textEnd"
+                            android:textSize="14sp" />
 
-                        <ImageView
-                            android:id="@+id/copyQuote"
-                            android:layout_width="wrap_content"
+                        <TextView
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="20dp"
-                            android:background="@drawable/ic_content" />
+                            android:fontFamily="@font/advent_pro_medium"
+                            android:text="@{item.bookTitle}"
+                            android:textAlignment="textEnd" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:id="@+id/editQuote"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/ic_edit" />
+
+                            <ImageView
+
+                                android:id="@+id/shareQuote"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:background="@drawable/ic_share" />
+
+                            <ImageView
+                                android:id="@+id/copyQuote"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:background="@drawable/ic_content" />
+                        </LinearLayout>
                     </LinearLayout>
+
                 </LinearLayout>
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+    </RelativeLayout>
 </layout>

@@ -7,4 +7,5 @@
     <color name="progress_bg_color">#A1070707</color>
     <color name="btn_border_color">#D6CBCA</color>
     <color name="cards_color">#84FFDA79</color>
+    <color name="transparent">#C8DFDBDB</color>
 </resources>
