@@ -4,19 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
-import android.util.Pair;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.scoto.partestestapplication.R;
@@ -24,22 +23,26 @@ import com.scoto.partestestapplication.databinding.ImageQuotesItemBinding;
 import com.scoto.partestestapplication.helper.BitmapManager;
 import com.scoto.partestestapplication.model.Image;
 import com.scoto.partestestapplication.ui.DisplayImageFullScreen;
-import com.scoto.partestestapplication.viewmodel.QuoteViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecyclerViewAdapter.ViewHolder> {
+public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecyclerViewAdapter.ViewHolder> implements Filterable {
     private static final String TAG = "ImageRecyclerViewAdapte";
     private Context mContext;
-    private List<Image> imageList;
-    private QuoteViewModel quoteViewModel;
+    private List<Image> imageQuotes;
+    private List<Image> filteredList;
+
     private Fragment fr;
+    private ImageRecyclerViewAdapter imageRecyclerViewAdapter;
+    private MyFilter myFilter;
 
     public ImageRecyclerViewAdapter(Context context, List<Image> imageQuotes, Fragment fragment) {
-        this.imageList = imageQuotes;
+        this.imageQuotes = imageQuotes;
         this.mContext = context;
         this.fr = fragment;
-        this.quoteViewModel = ViewModelProviders.of((FragmentActivity) context).get(QuoteViewModel.class);
+        this.filteredList = new ArrayList<>();//Initialize the filtered list
+
     }
 
 
@@ -53,34 +56,90 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final Image image = imageList.get(position);
+        final Image image = imageQuotes.get(position);
         holder.bind(image);
     }
 
     @Override
     public int getItemCount() {
-        return imageList != null ? imageList.size() : 0;
+        return imageQuotes != null ? imageQuotes.size() : 0;
     }
 
     public List<Image> getImageList() {
-        return imageList;
+        return imageQuotes;
     }
 
     public void setImageList(List<Image> imageList) {
-        this.imageList = imageList;
+        this.imageQuotes = imageList;
         notifyDataSetChanged();
     }
 
     public void removeItem(int pos, Image image) {
-        imageList.remove(pos);
+        imageQuotes.remove(pos);
         notifyItemRemoved(pos);
     }
 
     public void restoreItem(Image image, int pos) {
-        imageList.add(pos, image);
+        imageQuotes.add(pos, image);
         notifyItemInserted(pos);
     }
 
+    @Override
+    public Filter getFilter() {
+        Log.d(TAG, "getFilter: CALLED");
+        if (myFilter == null) {
+            filteredList.clear();
+            filteredList.addAll(imageQuotes);
+            myFilter = new ImageRecyclerViewAdapter.MyFilter(this, filteredList);//Initialize filter class
+        }
+        return myFilter;
+    }
+
+
+    private static class MyFilter extends Filter {
+
+        private ImageRecyclerViewAdapter imageRecyclerViewAdapter;
+        private List<Image> originalList;
+        private List<Image> filteredList;
+
+
+        private MyFilter(ImageRecyclerViewAdapter adapter, List<Image> originalList) {
+            this.imageRecyclerViewAdapter = adapter;
+            this.originalList = originalList;
+            this.filteredList = new ArrayList<>();
+
+        }
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            Log.d(TAG, "performFiltering: Method CALLED.");
+            filteredList.clear();
+            final FilterResults filterResults = new FilterResults();
+            if (constraint.length() == 0) {
+                //Searching not started,yet
+                filteredList.addAll(originalList);
+            } else {
+                final String filterPattern = constraint.toString().toLowerCase().trim();
+                for (Image img : originalList) {
+                    if (img.getQuoteTag().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(img);
+                    }
+                }
+            }
+            filterResults.values = filteredList;
+            filterResults.count = filteredList.size();
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            Log.d(TAG, "publishResults: Method CALLED.");
+            imageRecyclerViewAdapter.imageQuotes.clear();
+            imageRecyclerViewAdapter.imageQuotes.addAll((ArrayList<Image>) results.values);
+            imageRecyclerViewAdapter.notifyDataSetChanged();
+
+        }
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ImageQuotesItemBinding binding;
@@ -107,8 +166,9 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
 
 
                     Intent displayImageIntent = new Intent(mContext, DisplayImageFullScreen.class);
-                    displayImageIntent.putExtra("BITMAP_STR", bitmapStr);
-                    displayImageIntent.putExtra("TAG", imageList.get(getAdapterPosition()).getQuoteTag());
+                    displayImageIntent.putExtra("IMAGE_OBJ", imageQuotes.get(getAdapterPosition()));
+//                    displayImageIntent.putExtra("BITMAP_STR", bitmapStr);
+//                    displayImageIntent.putExtra("TAG", imageQuotes.get(getAdapterPosition()).getQuoteTag());
 
 
                     if (Build.VERSION.SDK_INT > 20) {
@@ -136,4 +196,6 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
             binding.executePendingBindings();
         }
     }
+
+
 }

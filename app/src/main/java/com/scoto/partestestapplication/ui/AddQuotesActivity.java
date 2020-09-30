@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,6 +30,7 @@ public class AddQuotesActivity extends AppCompatActivity implements View.OnFocus
     private Quote passedQuote = null;
     private Bundle quoteObjectBundle;
     private Dialogs dialogs;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,30 +58,49 @@ public class AddQuotesActivity extends AppCompatActivity implements View.OnFocus
             public void onClick(View v) {
                 getContents();
                 if (passedQuote == null) {
-                    Quote data = new Quote(quote, author, bookTitle, pageOfQuote, publisher, releaseDate);
-                    quoteViewModel.insert(data);
-                    Toast.makeText(getApplicationContext(), "INSERT", Toast.LENGTH_SHORT).show();
 
-                    dialogs = Dialogs.newInstance(null, 1);
-                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                    dialogs.show(ft, Dialogs.TAG);
-                    finish();
+
+                    if (quote.isEmpty() || author.isEmpty() || bookTitle.isEmpty()) {
+
+                        dialogs = Dialogs.newInstance(getString(R.string.empty_fields), -1);
+                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                        dialogs.show(ft, Dialogs.TAG);
+//                        Toast.makeText(AddQuotesActivity.this, "Quote, Author or Book Title can't be empty.", Toast.LENGTH_SHORT).show();
+
+
+                    } else {
+
+                        Quote data = new Quote(quote, author, bookTitle, pageOfQuote, publisher, releaseDate);
+                        quoteViewModel.insert(data);
+
+                        Log.d(TAG, "onClick: INSERT OPERATION");
+                        dialogs = Dialogs.newInstance(getString(R.string.successfull_add), 1);
+                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                        dialogs.show(ft, Dialogs.TAG);
+                        finish();
+                    }
 
 
                 } else {
-                    Quote data = new Quote(
-                            quoteTxt.getText().toString(), authorTxt.getText().toString(), bookTitleTxt.getText().toString(),
-                            pageOfQuoteTxt.getText().toString(), publisherTxt.getText().toString(), releaseDateTxt.getText().toString()
-                    );
-                    data.setId(passedQuote.getId());
 
-                    quoteViewModel.update(data);
-                    Toast.makeText(getApplicationContext(), "UPDATE", Toast.LENGTH_SHORT).show();
+                    if (quote.isEmpty() || author.isEmpty() || bookTitle.isEmpty()) {
+                        dialogs = Dialogs.newInstance(getString(R.string.empty_fields), -1);
+                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                        dialogs.show(ft, Dialogs.TAG);
+                    } else {
+                        Quote data = new Quote(
+                                quoteTxt.getText().toString(), authorTxt.getText().toString(), bookTitleTxt.getText().toString(),
+                                pageOfQuoteTxt.getText().toString(), publisherTxt.getText().toString(), releaseDateTxt.getText().toString()
+                        );
+                        data.setId(passedQuote.getId());
+                        quoteViewModel.update(data);
+                        Log.d(TAG, "onClick: UPDATE OPERATION");
+                        dialogs = Dialogs.newInstance("Updated", 2);
+                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                        dialogs.show(ft, Dialogs.TAG);
+                        finish();
+                    }
 
-                    dialogs = Dialogs.newInstance("Updated", 2);
-                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                    dialogs.show(ft, Dialogs.TAG);
-                    finish();
 
                 }
             }

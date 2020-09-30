@@ -39,12 +39,14 @@ public class Dialogs extends DialogFragment {
         args.putInt("operation_code", OPERATION_CODE);
         args.putString("message", msg);
         fragment.setArguments(args);
+
         return fragment;
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        //Get screen width,height and set the dialog to full screen.
         Dialog dialog = getDialog();
         if (dialog != null) {
             int width = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -57,6 +59,7 @@ public class Dialogs extends DialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //TO set full screen dialog, used custom Style.
         setStyle(DialogFragment.STYLE_NORMAL, R.style.FullScreenDialogStyle);
     }
 
@@ -71,19 +74,17 @@ public class Dialogs extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         msg = view.findViewById(R.id.msg);
+        container = view.findViewById(R.id.container);
+        contentOfContainer = view.findViewById(R.id.contentOfContainer);
+
         if (getArguments().getString("message") != null) {
             String message = getArguments().getString("message");
             if (message.length() > 0) {
+                Log.d(TAG, "onViewCreated: Message: " + message);
                 msg.setText(message);
             }
 
         }
-
-
-        container = view.findViewById(R.id.container);
-
-
-        contentOfContainer = view.findViewById(R.id.contentOfContainer);
 
         int code = getArguments().getInt("operation_code");
 
@@ -94,11 +95,17 @@ public class Dialogs extends DialogFragment {
             case 2:
                 contentOfContainer.setImageDrawable(ContextCompat.getDrawable(getContext(), R.mipmap.refresh1));
                 break;
+            case -1:
+                contentOfContainer.setImageDrawable(ContextCompat.getDrawable(getContext(), R.mipmap.empty_128x1281));
+                break;
             default:
                 contentOfContainer.setImageDrawable(ContextCompat.getDrawable(getContext(), R.mipmap.tick1));
                 break;
 
+
         }
+
+
     }
 
 

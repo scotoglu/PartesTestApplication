@@ -1,56 +1,49 @@
 package com.scoto.partestestapplication.ui;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.os.Build;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.View;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.transition.Slide;
-import androidx.transition.Transition;
 
+import com.github.chrisbanes.photoview.PhotoView;
 import com.scoto.partestestapplication.R;
 import com.scoto.partestestapplication.helper.BitmapManager;
+import com.scoto.partestestapplication.model.Image;
 
 public class DisplayImageFullScreen extends AppCompatActivity {
-
-    private ImageView displayImageFull;
-    private String bitmapStr, tag;
-    private TextView tagTxt;
+    private static final String TAG = "DisplayImageFullScreen";
+    private PhotoView displayImageFull;
+    private String bookInfo, tag;
+    private TextView tagTxt, bookInfoTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setAnimation();
         setContentView(R.layout.activity_display_image_full_screen);
 
+        Bundle data = getIntent().getExtras();
+        Image image = (Image) data.getParcelable("IMAGE_OBJ");
+        Log.d(TAG, "onCreate: Image TAG: " + image.getQuoteTag());
 
         hideSystemUI();
 
-        displayImageFull = findViewById(R.id.display_image);
+
+        displayImageFull = (PhotoView) findViewById(R.id.display_image);
         tagTxt = findViewById(R.id.tagTxt);
-        Intent intent = getIntent();
-        if (intent.getStringExtra("BITMAP_STR") != null) {
-            bitmapStr = intent.getStringExtra("BITMAP_STR");
-        }
-        if (intent.getStringExtra("TAG") != null) {
-            tag = intent.getStringExtra("TAG");
-        }
+        bookInfoTxt = findViewById(R.id.bookInfo);
+
+        tagTxt.setText("#" + image.getQuoteTag());
+        tagTxt.setTextColor(Color.RED);
 
 
-        if (!bitmapStr.isEmpty() || bitmapStr != null) {
-            BitmapManager bm = new BitmapManager();
-            Bitmap bitmap = bm.stringToBitmap(bitmapStr);
-            displayImageFull.setImageBitmap(bitmap);
-        }
-        if (!tag.isEmpty() || tag != null) {
-            tagTxt.setText(tag);
-        }
+        bookInfoTxt.setText(image.getAuthor() + ", " + image.getBookTitle());
+        displayImageFull.setImageBitmap(new BitmapManager().byteToBitmap(image.getImage()));
+
+
     }
 
 
@@ -64,17 +57,6 @@ public class DisplayImageFullScreen extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 
-//    private void setAnimation() {
-//        if (Build.VERSION.SDK_INT > 20) {
-//            Slide slide = new Slide();
-//
-//            slide.setSlideEdge(Gravity.LEFT);
-//            slide.setDuration(400);
-//            slide.setInterpolator(new DecelerateInterpolator());
-//            getWindow().setEnterTransition(slide);
-//            getWindow().setEnterTransition(slide);
-//        }
-//    }
 
     @Override
     protected void onDestroy() {

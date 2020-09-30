@@ -5,6 +5,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -14,8 +17,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -38,13 +42,16 @@ public class QuotesList extends Fragment {
 
     private FloatingActionButton addTxtQuote;
     private Animation fabOpen, fabClose, rotateBackward, rotateForward;
-    private List<Quote> quoteList;
     private RecyclerView recyclerView;
     private RecyclerViewAdapter viewAdapter;
+    private List<Quote> quotes;
     private QuoteViewModel quoteViewModel;
     private FrameLayout frameLayout;
     private boolean isOpen;
     private TextView emptyList;
+    private MenuItem menuItem;
+    private SearchView searchView;
+
 
     public QuotesList() {
         // Required empty public constructor
@@ -59,7 +66,7 @@ public class QuotesList extends Fragment {
         fabClose = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_close);
         rotateBackward = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_backward);
         rotateForward = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_forward);
-
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -88,11 +95,16 @@ public class QuotesList extends Fragment {
     }
 
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        return super.onOptionsItemSelected(item);
+    }
+
     private void setRecyclerViewList() {
         Log.d(TAG, "setRecyclerViewList: Active...");
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        viewAdapter = new RecyclerViewAdapter(getContext(), quoteList);
+        viewAdapter = new RecyclerViewAdapter();
         recyclerView.setHasFixedSize(true);
         recyclerView.scrollToPosition(0);
         recyclerView.setAdapter(viewAdapter);
@@ -116,17 +128,20 @@ public class QuotesList extends Fragment {
             @Override
             public void onChanged(List<Quote> quoteList) {
                 Log.d(TAG, "onChanged: Observe Called...");
+
+                viewAdapter.setQuoteList(quoteList);
+                viewAdapter.setContext(getContext());
+                viewAdapter.notifyDataSetChanged();
                 if (quoteList.size() <= 0)
                     setEmptyList(false);
                 else
                     setEmptyList(true);
 
-                viewAdapter.setQuoteList(quoteList);
-
                 //  recyclerView.scrollToPosition(quoteList.size() - 1);
             }
         });
     }
+
 
 
     private void animateFab() {
@@ -193,8 +208,51 @@ public class QuotesList extends Fragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy: Called");
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.app_bar_menu, menu);
+
+        final MenuItem item = menu.findItem(R.id.search);
+        searchView = (SearchView) item.getActionView();
+        searchView.setQueryHint("Search Author or BookTitle.");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Log.d(TAG, "onQueryTextSubmit: CALLED....");
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.d(TAG, "onQueryTextChange: CALLED...");
+                viewAdapter.getFilter().filter(newText);
+                return true;
+            }
+
+        });
+
+
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
+
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop: Fragment onStopped");
+        if (menuItem != null) {
+            menuItem.collapseActionView();
+
+        }
+
+
     }
 }

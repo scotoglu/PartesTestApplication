@@ -11,7 +11,7 @@
     <string name="release_date">Type Release Date.</string>
     <string name="btn_text">Save</string>
     <string name="page">p</string>
-    <string name="successfull_add">Quote Added Successfully</string>
+    <string name="successfull_add">Successfully</string>
     <string name="snackbar_item_remove">Item was removed from list</string>
     <string name="title_activity_settings">SettingsActivity</string>
 
@@ -29,4 +29,9 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
+
+    <string name="empty_fields">Please, remember the quotes, author and book title.</string>
+
+
 </resources>

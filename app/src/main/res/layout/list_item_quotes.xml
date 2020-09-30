@@ -16,7 +16,6 @@
     </data>
 
     <RelativeLayout
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
@@ -33,7 +32,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/card_back_list_quotes"
+                android:background="@drawable/item_card_back"
                 android:padding="11dp">
 
                 <LinearLayout

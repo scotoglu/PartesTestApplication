@@ -17,79 +17,120 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:padding="20dp"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
 
         <ImageView
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
             android:id="@+id/imageQuote"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="24dp"
-            app:layout_constraintBottom_toTopOf="@+id/author"
+            android:src="@drawable/castle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@tools:sample/avatars" />
+            app:layout_constraintBottom_toTopOf="@+id/authorLinearLayout" />
 
 
-        <EditText
-            android:id="@+id/author"
+        <LinearLayout
+            android:id="@+id/authorLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@id/imageQuote"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <ImageView
+                android:id="@+id/authorImageViewFocus"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:src="@drawable/ic_keyboard_arrow_right_48" />
+
+            <EditText
+                android:id="@+id/author"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Type Author..."
+                android:inputType="textAutoComplete"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/bookTitleLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:hint="Type Author"
-            android:inputType="textAutoComplete"
-            android:textSize="18sp"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageQuote" />
+            app:layout_constraintTop_toBottomOf="@+id/authorLinearLayout">
 
-        <EditText
-            android:id="@+id/bookTitle"
+            <ImageView
+                android:id="@+id/bookTitleImageViewFocus"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:src="@drawable/ic_keyboard_arrow_right_48" />
+
+            <EditText
+                android:id="@+id/bookTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Type Book Title..."
+                android:inputType="textAutoComplete"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tagLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:hint="Type Book Title"
-            android:inputType="textAutoComplete"
-            android:textSize="18sp"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/author" />
+            app:layout_constraintTop_toBottomOf="@+id/bookTitleLinearLayout">
 
-        <EditText
-            android:id="@+id/tag"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:hint="Type a Tag."
-            android:inputType="textAutoComplete"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/bookTitle" />
+            <ImageView
+                android:id="@+id/tagImageViewFocus"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:src="@drawable/ic_keyboard_arrow_right_48" />
+
+            <EditText
+                android:id="@+id/tag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Type Tag..."
+                android:inputType="textAutoComplete"
+                android:textSize="18sp" />
+        </LinearLayout>
+
 
         <Button
             android:id="@+id/saveBtn"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="50dp"
-            android:layout_marginTop="32dp"
             android:background="@drawable/button_design"
             android:text="Save"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tag" />
+            app:layout_constraintTop_toBottomOf="@+id/tagLinearLayout" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

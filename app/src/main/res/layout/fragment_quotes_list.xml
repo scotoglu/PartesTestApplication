@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/frameLayout"
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/image"
+    android:background="@mipmap/bg_list_old"
     tools:context=".ui.QuotesList">
 
     <RelativeLayout
-        android:padding="10dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="10dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
-            tools:listitem="@layout/list_item_quotes"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
@@ -24,13 +24,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Empty List...."
+            android:layout_margin="25dp"
+            android:background="@mipmap/white_box"
+            android:backgroundTint="@color/cards_color"
+            android:foreground="@mipmap/empty_128x1281"
+            android:gravity="bottom|center"
+            android:paddingHorizontal="5dp"
+            android:paddingBottom="5dp"
+            android:text="Oops, there is nothing to show here."
             android:textAlignment="center"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:visibility="invisible" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/addTxtQuote"
+            style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -38,7 +46,8 @@
             android:layout_marginTop="10dp"
             android:layout_marginRight="25dp"
             android:layout_marginBottom="25dp"
-            android:src="@drawable/ic_outline_playlist_add_48" />
+            android:src="@drawable/ic_outline_playlist_add_48"
+            app:backgroundTint="@color/fab_bg_tint" />
 
 
     </RelativeLayout>

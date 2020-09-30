@@ -1,9 +1,8 @@
 package com.scoto.partestestapplication.helper;
 
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
+import android.graphics.Color;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,10 +12,6 @@ public class BindingAdapters {
 
     @BindingAdapter("setImage")
     public static void setImageViewResource(ImageView imageView, byte[] image) {
-        int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
-        int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
-        Log.d("APPP", "setImageViewResource: Width: " + screenWidth);
-        Log.d("APPP", "setImageViewResource: Height: " + screenHeight);
 
         Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
 
@@ -35,5 +30,6 @@ public class BindingAdapters {
 
         textView.setText(texts);
     }
+
 }
 

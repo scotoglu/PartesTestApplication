@@ -1,33 +1,91 @@
 package com.scoto.partestestapplication;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.scoto.partestestapplication.adapter.ViewPagerAdapter;
+import com.scoto.partestestapplication.model.Quote;
 import com.scoto.partestestapplication.ui.ImageQuotesList;
 import com.scoto.partestestapplication.ui.QuotesList;
 import com.scoto.partestestapplication.viewmodel.QuoteViewModel;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.List;
 
+public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
     private Toolbar toolbar;
-    private FragmentManager fm;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private QuotesList quotesList;
     private ImageQuotesList imageQuotesList;
-    private QuoteViewModel quoteViewModel;
+    SearchView.OnQueryTextListener onQueryTextListener = new SearchView.OnQueryTextListener() {
+        @Override
+        public boolean onQueryTextSubmit(final String query) {
+            Log.d(TAG, "onQueryTextSubmit: " + query);
+
+            return true;
+        }
+
+        @Override
+        public boolean onQueryTextChange(final String newText) {
+            Log.d(TAG, "onQueryTextChange: " + newText);
+
+            return true;
+        }
+    };
+    private SearchView searchView;
+
+    //    private RecyclerViewAdapter viewAdapter;
+    private MenuItem menuItem;
+    private int TAB_LAYOUT_POSITION_QUOTE_TEXT = 0;
+    private int TAB_LAYOUT_POSITION_QUOTE_IMAGE = 1;
+
+
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        Log.d(TAG, "onCreateOptionsMenu: Called.");
+//        getMenuInflater().inflate(R.menu.app_bar_menu, menu);
+//        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+//        menuItem = menu.findItem(R.id.search);
+//        searchView = (SearchView) menuItem.getActionView();
+//        searchView.setQueryHint("Search Author or Book Title.");
+//        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+//        searchView.setOnQueryTextListener(onQueryTextListener);
+//
+//        return super.onCreateOptionsMenu(menu);
+//    }
+
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.setting:
+//                Toast.makeText(this, "Setting", Toast.LENGTH_SHORT).show();
+//                return true;
+//            case R.id.about:
+//                Toast.makeText(this, "About", Toast.LENGTH_SHORT).show();
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//
+//
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        quoteViewModel = ViewModelProviders.of(this).get(QuoteViewModel.class);
+//        viewAdapter = new RecyclerViewAdapter();
 
 
         toolbar = findViewById(R.id.toolbar);
@@ -57,42 +115,34 @@ public class MainActivity extends AppCompatActivity {
         viewPagerAdapter.addFragment(imageQuotesList, "image List");
 
         viewPager.setAdapter(viewPagerAdapter);
-//        tabLayout.getTabAt(0).setIcon(R.drawable.ic_twotone_list_alt_24).getOrCreateBadge().setNumber(10);
-//        tabLayout.getTabAt(1).setIcon(R.drawable.ic_baseline_image_search_24).getOrCreateBadge().setNumber(10);
-        //     getBadgeNumbers();
+
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+//                if (!searchView.isIconified()) {
+//                    Log.d(TAG, "onTabSelected: ICONIFIED");
+//                    menuItem.collapseActionView();
+//                }
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.app_bar_menu, menu);
-        return true;
-    }
-
-
-//    private void getBadgeNumbers() {
-//
-//        int numOfQuotes = quoteViewModel.getQuotesNum();
-//        int numOfImageQuotes = quoteViewModel.getImageQuoteNum();
-//        tabLayout.getTabAt(0).setIcon(R.drawable.ic_twotone_list_alt_24).getOrCreateBadge().setNumber(numOfQuotes);
-//        tabLayout.getTabAt(1).setIcon(R.drawable.ic_baseline_image_search_24).getOrCreateBadge().setNumber(numOfImageQuotes);
-//
-//    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.search:
-                Toast.makeText(this, "Search Menu", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.setting:
-                Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.about:
-                Toast.makeText(this, "About Me", Toast.LENGTH_SHORT).show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: MainActivity....");
     }
 }

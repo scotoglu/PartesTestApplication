@@ -9,7 +9,6 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:statusBarColor">@color/status_bar</item>
 
-
         <item name="android:windowExitAnimation">@anim/exit_from_left</item>
         <item name="android:windowEnterAnimation">@anim/enter_from_left</item>
 
@@ -24,7 +23,6 @@
 
         <!-- Set this to true if you want Full Screen without status bar -->
         <item name="android:windowFullscreen">false</item>
-        <item name="android:textColor">#5A5454</item>
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowBackground">@color/cards_color</item>
 

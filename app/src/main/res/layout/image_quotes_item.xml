@@ -35,7 +35,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/card_back_list_quotes"
+                android:background="@drawable/item_card_back"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -61,13 +61,15 @@
                         android:textSize="16sp" />
 
                     <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:transitionName="explode_image"
                         android:id="@+id/imageView"
                         setImage="@{imagesQuote.image}"
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp"
+                        android:adjustViewBounds="true"
+                        android:padding="15dp"
                         android:scaleType="fitCenter"
-                        tools:srcCompat="@tools:sample/avatars" />
+                        android:src="@drawable/castle" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"

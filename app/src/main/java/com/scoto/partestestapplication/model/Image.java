@@ -1,11 +1,14 @@
 package com.scoto.partestestapplication.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "table_images")
-public class Image {
+public class Image implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "q_id")
@@ -26,12 +29,34 @@ public class Image {
     @ColumnInfo(name = "timestamp")
     private long timestamp;
 
+
     public Image(byte[] image, String author, String bookTitle, String quoteTag) {
         this.image = image;
         this.bookTitle = bookTitle;
         this.author = author;
         this.quoteTag = quoteTag;
         this.timestamp = System.currentTimeMillis();
+    }
+
+    public static final Creator<Image> CREATOR = new Creator<Image>() {
+        @Override
+        public Image createFromParcel(Parcel in) {
+            return new Image(in);
+        }
+
+        @Override
+        public Image[] newArray(int size) {
+            return new Image[size];
+        }
+    };
+
+    protected Image(Parcel in) {
+        id = in.readInt();
+        image = in.createByteArray();
+        author = in.readString();
+        bookTitle = in.readString();
+        quoteTag = in.readString();
+        timestamp = in.readLong();
     }
 
     public void setTimestamp(long timestamp) {
@@ -82,5 +107,18 @@ public class Image {
         return timestamp;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeByteArray(image);
+        dest.writeString(author);
+        dest.writeString(bookTitle);
+        dest.writeString(quoteTag);
+        dest.writeLong(timestamp);
+    }
 }

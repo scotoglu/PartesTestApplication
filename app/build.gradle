@@ -40,17 +40,31 @@ dependencies {
 
     def room_version = "2.2.5"
 
+
     implementation "android.arch.lifecycle:extensions:$rootProject.archLifecycleVersion"
     annotationProcessor "android.arch.lifecycle:compiler:$rootProject.archLifecycleVersion"
 
+    //Room
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
+    //RecyclerView
     implementation "androidx.recyclerview:recyclerview:1.1.0"
+    //CadView
     implementation "androidx.cardview:cardview:1.0.0"
 
     //Android image Cropper
     implementation 'com.android.support:design:27.1.0'
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.6.0'
 
+    //dagger 2
+    implementation 'com.google.dagger:dagger:2.21'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.21'
+    implementation 'com.google.dagger:dagger-android:2.21'
+    implementation 'com.google.dagger:dagger-android-support:2.21' // if you use the support libraries
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.21'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.21'
+
+    //PhotoView for Zoom
+    implementation 'com.github.chrisbanes:PhotoView:2.0.0'
 
 }

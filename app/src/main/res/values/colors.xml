@@ -8,4 +8,5 @@
     <color name="btn_border_color">#D6CBCA</color>
     <color name="cards_color">#84FFDA79</color>
     <color name="transparent">#C8DFDBDB</color>
+    <color name="fab_bg_tint">#CCF4F1A3</color>
 </resources>

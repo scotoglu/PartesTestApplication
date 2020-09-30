@@ -36,6 +36,7 @@ public class Quote implements Parcelable {
     @ColumnInfo(name = "created_at")
     private long created_at;
 
+
     public Quote(String quote, String author, String bookTitle, String pageOfQuote, String publisher, String releaseDate) {
         this.quote = quote;
         this.author = author;

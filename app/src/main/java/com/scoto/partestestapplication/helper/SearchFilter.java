@@ -40,7 +40,8 @@ public class SearchFilter<T> extends Filter {
                 } else if (t instanceof Image) {
 
                     Image image = (Image) t;
-                    if (image.getQuoteTag().toLowerCase().contains(searchPattern)) {
+                    if (image.getAuthor().toLowerCase().contains(searchPattern)
+                            || image.getBookTitle().toLowerCase().contains(searchPattern)) {
                         filteredList.add(t);
                     }
                 }

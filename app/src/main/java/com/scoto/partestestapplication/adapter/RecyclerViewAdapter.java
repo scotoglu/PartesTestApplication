@@ -8,40 +8,38 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.scoto.partestestapplication.ui.AddQuotesActivity;
 import com.scoto.partestestapplication.MainActivity;
 import com.scoto.partestestapplication.R;
-import com.scoto.partestestapplication.callback.DiffUtilCallback;
 import com.scoto.partestestapplication.databinding.ListItemQuotesBinding;
 import com.scoto.partestestapplication.helper.StringFormatter;
 import com.scoto.partestestapplication.model.Quote;
-import com.scoto.partestestapplication.viewmodel.QuoteViewModel;
+import com.scoto.partestestapplication.ui.AddQuotesActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> implements Filterable {
     private static final String TAG = "RecyclerViewAdapter";
 
-    private Context mContext;
-    private List<Quote> quoteList;
-    private FragmentManager fm;
-    private QuoteViewModel quoteViewModel;
+
+    private Context context;
+    private List<Quote> quoteTextList;
+
+    private List<Quote> filteredList;
+    private MyFilter filter;
 
 
-    public RecyclerViewAdapter(Context context, List<Quote> quoteList) {
-        this.mContext = context;
-        this.quoteList = quoteList;
-        quoteViewModel = ViewModelProviders.of((FragmentActivity) context).get(QuoteViewModel.class);
+    public RecyclerViewAdapter() {
+        Log.d(TAG, "RecyclerViewAdapter: Constructor...");
     }
 
 
@@ -55,43 +53,101 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final Quote quote = quoteList.get(position);
+        final Quote quote = quoteTextList.get(position);
         StringFormatter stringFormatter = new StringFormatter();
         holder.bind(quote, stringFormatter);
     }
 
     @Override
     public int getItemCount() {
-        return quoteList != null ? quoteList.size() : 0;
+        return quoteTextList != null ? quoteTextList.size() : 0;
+    }
+
+    public List<Quote> getQuoteList() {
+        Log.d(TAG, "getQuoteList: GetQuoteList");
+        return quoteTextList;
     }
 
     public void setQuoteList(List<Quote> quoteList) {
-        this.quoteList = quoteList;
+        Log.d(TAG, "setQuoteList: Quote List Setter");
+        this.quoteTextList = quoteList;
         notifyDataSetChanged();//Do not forget !!!
         /*When I have forgotten to write. Didn't add new item properly.
          * i.e. add two item, then list pretend to added only first item !!1*/
     }
 
-    public List<Quote> getQuoteList() {
-        return quoteList;
-    }
-
     public void removeItem(int position, Quote quote) {
-        quoteList.remove(position);
+        quoteTextList.remove(position);
         notifyItemRemoved(position);
     }
 
     public void restoreItem(Quote q, int position) {
-        quoteList.add(position, q);
+        quoteTextList.add(position, q);
         notifyItemInserted(position);
     }
 
-    public void updateItem(List<Quote> newList) {
-        //Update Items using DiffUtil.Callback compare with old list then dispatches the new list.
 
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtilCallback(quoteList, newList));
-        diffResult.dispatchUpdatesTo(this);
+    @Override
+    public Filter getFilter() {
+        Log.d(TAG, "getFilter: Active...");
+        if (filter == null) {
+            filteredList = new ArrayList<>();
+            filteredList.clear();
+            filteredList.addAll(quoteTextList);
+            filter = new MyFilter(this, filteredList);
+        }
+        return filter;
+    }
 
+    public void setContext(Context context) {
+        Log.d(TAG, "setContext: Context Setter");
+        this.context = context;
+    }
+
+    private static class MyFilter extends Filter {
+
+        private RecyclerViewAdapter viewAdapter;
+        private List<Quote> originalList;
+        private List<Quote> filteredList;
+
+
+        private MyFilter(RecyclerViewAdapter adapter, List<Quote> originalList) {
+            this.viewAdapter = adapter;
+            this.originalList = originalList;
+            this.filteredList = new ArrayList<>();
+
+        }
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            Log.d(TAG, "performFiltering: Method CALLED.");
+            filteredList.clear();
+            final FilterResults filterResults = new FilterResults();
+            if (constraint.length() == 0) {
+                //Searching not started,yet
+                filteredList.addAll(originalList);
+            } else {
+                final String filterPattern = constraint.toString().toLowerCase().trim();
+                for (Quote q : originalList) {
+                    if (q.getAuthor().toLowerCase().contains(filterPattern)
+                            || q.getAuthor().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(q);
+                    }
+                }
+            }
+            filterResults.values = filteredList;
+            filterResults.count = filteredList.size();
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            Log.d(TAG, "publishResults: Method CALLED.");
+            viewAdapter.quoteTextList.clear();
+            viewAdapter.quoteTextList.addAll((ArrayList<Quote>) results.values);
+            viewAdapter.notifyDataSetChanged();//Without doesn't refresh list.
+
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -112,20 +168,20 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     Log.d(TAG, "onClick: Share Called..");
                     Intent shareIntent = new Intent();
                     shareIntent.setAction(Intent.ACTION_SEND);
-                    shareIntent.putExtra(Intent.EXTRA_TEXT, new StringFormatter().sendIntentText(quoteList.get(getAdapterPosition()).getQuote(),quoteList.get(getAdapterPosition()).getQuote()));
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, new StringFormatter().sendIntentText(quoteTextList.get(getAdapterPosition()).getQuote(), quoteTextList.get(getAdapterPosition()).getQuote()));
                     shareIntent.setType("text/plain");
-                    mContext.startActivity(Intent.createChooser(shareIntent, "Quote"));
+                    context.startActivity(Intent.createChooser(shareIntent, "Quote"));
                 }
             });
             copy.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Log.d(TAG, "onClick: Copy Called Adapter Position" + getAdapterPosition());
-                    ClipboardManager clipboardManager = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
-                    ClipData clipData = ClipData.newPlainText("text", quoteList.get(getAdapterPosition()).getQuote().toString());
+                    ClipboardManager clipboardManager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipData clipData = ClipData.newPlainText("text", quoteTextList.get(getAdapterPosition()).getQuote().toString());
                     clipboardManager.setPrimaryClip(clipData);
                     if (clipData != null)
-                        Toast.makeText(mContext, "Quote Copied...", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Quote Copied...", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "onClick: Copied Data : " + clipData.getItemAt(0));
                 }
             });
@@ -133,12 +189,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 @Override
                 public void onClick(View v) {
                     Log.d(TAG, "onClick: Edit Called Layout Position" + getLayoutPosition());
-                    MainActivity mainActivity = (MainActivity) mContext;
+                    MainActivity mainActivity = (MainActivity) context;
 
 //                    Bundle quoteObjectBundle = new Bundle();
 //                    quoteObjectBundle.putParcelable("quoteInfo", quoteList.get(getAdapterPosition()));
                     Intent editIntent = new Intent(mainActivity, AddQuotesActivity.class);
-                    editIntent.putExtra("quoteInfo",quoteList.get(getAdapterPosition()));
+                    editIntent.putExtra("quoteInfo", quoteTextList.get(getAdapterPosition()));
                     mainActivity.startActivity(editIntent);
                     //  mainActivity.overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
 
@@ -153,11 +209,5 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         }
     }
-
-//    private void passFragment(Fragment fr, FragmentManager fm) {
-//        fm.beginTransaction().replace(R.id.main_content, fr)
-//                .addToBackStack(null)
-//                .commit();
-//    }
 
 }

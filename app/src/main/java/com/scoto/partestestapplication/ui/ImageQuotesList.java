@@ -1,5 +1,6 @@
 package com.scoto.partestestapplication.ui;
 
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -8,6 +9,9 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -16,6 +20,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -26,6 +32,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayout;
 import com.scoto.partestestapplication.R;
 import com.scoto.partestestapplication.adapter.ImageRecyclerViewAdapter;
 import com.scoto.partestestapplication.callback.SwipeToDeleteCallback;
@@ -48,9 +55,12 @@ public class ImageQuotesList extends Fragment {
     private RecyclerView recyclerView;
     private ImageRecyclerViewAdapter viewAdapter;
     private List<Image> imageList;
+    private TabLayout tabLayout;
     private FrameLayout frameLayout;
     private TextView emptyList;
     private QuoteViewModel quoteViewModel;
+
+    private MenuItem menuItem;
 
     public ImageQuotesList() {
         // Required empty public constructor
@@ -76,6 +86,7 @@ public class ImageQuotesList extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
     }
 
@@ -86,6 +97,7 @@ public class ImageQuotesList extends Fragment {
         recyclerView = v.findViewById(R.id.imageRecyclerList);
         frameLayout = v.findViewById(R.id.imageFrameLayout);
         emptyList = v.findViewById(R.id.imageEmptyList);
+        tabLayout = v.findViewById(R.id.tab_layout);
         addImgQuote = v.findViewById(R.id.addImgQuote);
         addImgQuote.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,14 +124,6 @@ public class ImageQuotesList extends Fragment {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 Uri imageUri = result.getUri();
-//                CroppedImage croppedImage = new CroppedImage();
-//                Bundle bundle = new Bundle();
-//                bundle.putString("IMAGE_PATH", imageUri.getPath().toString());
-//                croppedImage.setArguments(bundle);
-//                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//                fragmentManager.beginTransaction().replace(R.id.main_content, croppedImage)
-//                        .addToBackStack(null).commit();
-
 
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContext().getContentResolver(), imageUri);
@@ -128,14 +132,6 @@ public class ImageQuotesList extends Fragment {
                     BitmapManager bm = new BitmapManager();
                     String bitmapStr = bm.bitmapToBase64(bitmap);
                     if (!bitmapStr.isEmpty() || bitmapStr.length() > 0) {
-//                        AddImageQuotes imageQuotes = new AddImageQuotes();
-//                        Bundle bundle = new Bundle();
-//                        bundle.putString("BITMAP", bitmapStr);
-//                        imageQuotes.setArguments(bundle);
-//                        FragmentManager fm = getActivity().getSupportFragmentManager();
-//                        fm.beginTransaction().replace(R.id.main_content, imageQuotes)
-//                                .addToBackStack(null)
-//                                .commit();
                         Intent addImageIntent = new Intent(getActivity(), AddImageQuotesActivity.class);
                         addImageIntent.putExtra("BITMAP", bitmapStr);
                         startActivity(addImageIntent);
@@ -153,8 +149,9 @@ public class ImageQuotesList extends Fragment {
             }
         }
     }
-//    private void saveToImage(Bitmap bitmap) {
-////        String fileName = String.format("%d", System.currentTimeMillis());
+
+    private void saveToImage(Bitmap bitmap) {
+//        String fileName = String.format("%d", System.currentTimeMillis());
 //        String fileName = String.format("%s", "Quote_" + System.currentTimeMillis());
 //        String filePath = getContext().getExternalFilesDir(null).getAbsolutePath();
 //
@@ -180,8 +177,37 @@ public class ImageQuotesList extends Fragment {
 //            Log.d(TAG, "saveToImage: Error.... : " + msg);
 //        }
 //
-//
-//    }
+
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.app_bar_menu, menu);
+
+        final MenuItem item = menu.findItem(R.id.search);
+        final SearchView searchView = (SearchView) item.getActionView();
+        searchView.setQueryHint("Search Author or BookTitle.");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Log.d(TAG, "onQueryTextSubmit: CALLED....");
+                searchView.clearFocus();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.d(TAG, "onQueryTextChange: CALLED...");
+                viewAdapter.getFilter().filter(newText);
+                return true;
+            }
+
+        });
+
+
+    }
 
 
     private void setRecyclerView() {
@@ -243,4 +269,34 @@ public class ImageQuotesList extends Fragment {
             emptyList.setVisibility(View.INVISIBLE);
 
     }
+
+
+    public MenuItem getMenuItem() {
+        return menuItem;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: Fragment onResume...");
+        viewAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: Fragment onPause");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop: Fragment onStopped");
+        if (menuItem != null) {
+            menuItem.collapseActionView();
+        }
+
+    }
+
+
 }

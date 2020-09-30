@@ -4,7 +4,7 @@
     android:id="@+id/imageFrameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/image"
+    android:background="@mipmap/bg_list_old"
     tools:context=".ui.ImageQuotesList">
 
     <RelativeLayout
@@ -13,9 +13,9 @@
         android:padding="10dp">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:layout_height="match_parent"
             android:id="@+id/imageRecyclerList"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
             tools:listitem="@layout/image_quotes_item" />
 
         <TextView
@@ -23,9 +23,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center"
-            android:text="Empty List"
-            android:textSize="30sp"
+            android:layout_margin="25dp"
+            android:background="@mipmap/white_box"
+            android:backgroundTint="@color/cards_color"
+            android:foreground="@mipmap/empty_128x1281"
+            android:gravity="bottom|center"
+            android:paddingHorizontal="5dp"
+            android:paddingBottom="5dp"
+            android:text="Oops, there is nothing to show here."
+            android:textAlignment="center"
+            android:textSize="20sp"
             android:visibility="invisible" />
 
 
@@ -38,5 +45,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="25dp"
+        android:backgroundTint="@color/fab_bg_tint"
         android:src="@drawable/ic_outline_add_a_photo_48" />
 </FrameLayout>
