@@ -42,11 +42,11 @@ public class AddQuotesActivity extends AppCompatActivity implements View.OnFocus
             passedQuote = intent.getParcelableExtra("quoteInfo");
         }
 
-        Toolbar toolbar = findViewById(R.id.toolbar_add);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 
-        getSupportActionBar().setTitle("PartesTest");
+        getSupportActionBar().setTitle("Add Quote");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
@@ -156,10 +156,12 @@ public class AddQuotesActivity extends AppCompatActivity implements View.OnFocus
 
         pageOfQuoteTxt = findViewById(R.id.pageOfQuote);
         pageOfQuoteTxt.setOnFocusChangeListener(this);
+
         releaseDateTxt = findViewById(R.id.releaseDate);
         releaseDateTxt.setOnFocusChangeListener(this);
     }
 
+    // TODO, write a CustomView for EditText or ImageView for onFocusChangeListener
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (hasFocus) {
@@ -232,10 +234,5 @@ public class AddQuotesActivity extends AppCompatActivity implements View.OnFocus
         v.setLayoutParams(params);
     }
 
-    @Override
-    public void onBackPressed() {
-        //to hide activity with animation
-        super.onBackPressed();
 
-    }
 }

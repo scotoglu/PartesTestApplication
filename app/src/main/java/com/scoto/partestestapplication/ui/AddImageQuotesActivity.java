@@ -1,8 +1,9 @@
 package com.scoto.partestestapplication.ui;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,10 +18,13 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.scoto.partestestapplication.R;
-import com.scoto.partestestapplication.helper.BitmapManager;
 import com.scoto.partestestapplication.helper.Constants;
 import com.scoto.partestestapplication.model.Image;
 import com.scoto.partestestapplication.viewmodel.QuoteViewModel;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class AddImageQuotesActivity extends AppCompatActivity implements View.OnFocusChangeListener {
     private static final String TAG = "AddImageQuotesActivity";
@@ -29,9 +33,9 @@ public class AddImageQuotesActivity extends AppCompatActivity implements View.On
     private ImageView focusAuthor, focusBookTitle, focusTag;
     private EditText authorTxt, bookTitleTxt, tagTxt;
     private Button saveBtn;
-    private String bitmapStr;
-    private BitmapManager bm;
-    private Bitmap bitmap;
+
+    private Uri imageUri;
+    private String uri;
     private QuoteViewModel quoteViewModel;
 
 
@@ -41,23 +45,22 @@ public class AddImageQuotesActivity extends AppCompatActivity implements View.On
         setContentView(R.layout.activity_add_image_quotes);
         quoteViewModel = ViewModelProviders.of(this).get(QuoteViewModel.class);
 
-        Toolbar toolbar = findViewById(R.id.toolbar_add_image);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("PartesTest");
+        setViewReference();
+
+        getSupportActionBar().setTitle("Add Quote As Image");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        Intent intent = getIntent();
-        if (intent.getStringExtra("BITMAP") != null) {
-            bitmapStr = intent.getStringExtra("BITMAP").toString();
-        }
-        setViewReference();
-        if (!bitmapStr.isEmpty() || bitmapStr.length() > 0) {
-            bm = new BitmapManager();
-            bitmap = bm.stringToBitmap(bitmapStr);
-            imageQuote.setImageBitmap(bitmap);
-        }
+        Bundle bundle = getIntent().getExtras();
+        uri = bundle.getString("IMAGE_URI");
+
+        imageUri = Uri.parse(uri);//Image Path
+        imageQuote.setImageURI(Uri.parse(uri));
+
+
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,28 +90,57 @@ public class AddImageQuotesActivity extends AppCompatActivity implements View.On
     }
 
     private void saveImageQuotes() {
-        if (bitmap != null) {
-            byte[] imageByte = bm.bitmapToByte(bitmap);
-            String author = authorTxt.getText().toString();
-            String bookTitle = bookTitleTxt.getText().toString();
-            String tag = tagTxt.getText().toString();
+        String image_path = saveImageToFileSys();
+        String author = authorTxt.getText().toString();
+        String bookTitle = bookTitleTxt.getText().toString();
+        String tag = tagTxt.getText().toString();
 
 
-            if (author.isEmpty() || bookTitle.isEmpty()) {
-                Dialogs dialogs = Dialogs.newInstance(getString(R.string.empty_fields), Constants.OPERATION_CODE_EMPTY);
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                dialogs.show(ft, Dialogs.TAG);
-            } else {
-                Image image = new Image(imageByte, author, bookTitle, tag);
-                quoteViewModel.insertImage(image);
-                Dialogs dialogs = Dialogs.newInstance(getString(R.string.successfull_add), Constants.OPERATION_CODE_SUCCESS);
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                dialogs.show(ft, Dialogs.TAG);
-                finish();
-            }
+        if (author.isEmpty() || bookTitle.isEmpty()) {
+            Dialogs dialogs = Dialogs.newInstance(getString(R.string.empty_fields), Constants.OPERATION_CODE_EMPTY);
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            dialogs.show(ft, Dialogs.TAG);
+        } else {
+            Image image = new Image(image_path, author, bookTitle, tag);
+            quoteViewModel.insertImage(image);
+            Dialogs dialogs = Dialogs.newInstance(getString(R.string.successfull_add), Constants.OPERATION_CODE_SUCCESS);
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            dialogs.show(ft, Dialogs.TAG);
+            finish();
+        }
 
+
+    }
+
+    private String saveImageToFileSys() {
+        Log.d(TAG, "saveImageToFileSys: Active");
+        if (imageUri != null) {
 
         }
+
+        String imageFileName = "Partes_" + System.currentTimeMillis();
+        String storageDir = this.getFilesDir().getPath();//Internal Storage
+        File path = new File(storageDir, "/SavedImageQuotes");
+        if (!path.exists()) {
+            path.mkdirs();
+        }
+
+        File outFile = new File(path, imageFileName);
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(outFile);
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(uri));
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            Log.d(TAG, "saveImageToFileSys: OutFile: " + outFile);
+            fos.flush();
+            fos.close();
+        } catch (IOException e) {
+            String msg = e.getMessage();
+            e.printStackTrace();
+            Log.d(TAG, "saveToImage: Error.... : " + msg);
+        }
+        return outFile.getPath();
+
     }
 
     @Override
@@ -117,6 +149,7 @@ public class AddImageQuotesActivity extends AppCompatActivity implements View.On
         Log.d(TAG, "onDestroy: AddImageQuotesActivity...");
     }
 
+    // TODO, write a CustomView for EditText or ImageView for onFocusChangeListener
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (hasFocus) {

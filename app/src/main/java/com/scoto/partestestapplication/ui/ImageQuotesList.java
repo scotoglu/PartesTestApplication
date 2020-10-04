@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,7 +20,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -36,13 +34,11 @@ import com.google.android.material.tabs.TabLayout;
 import com.scoto.partestestapplication.R;
 import com.scoto.partestestapplication.adapter.ImageRecyclerViewAdapter;
 import com.scoto.partestestapplication.callback.SwipeToDeleteCallback;
-import com.scoto.partestestapplication.helper.BitmapManager;
 import com.scoto.partestestapplication.model.Image;
 import com.scoto.partestestapplication.viewmodel.QuoteViewModel;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-import java.io.IOException;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
@@ -60,6 +56,7 @@ public class ImageQuotesList extends Fragment {
     private TextView emptyList;
     private QuoteViewModel quoteViewModel;
 
+    private String bitmapStr;
     private MenuItem menuItem;
 
     public ImageQuotesList() {
@@ -124,24 +121,36 @@ public class ImageQuotesList extends Fragment {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 Uri imageUri = result.getUri();
+                Log.d(TAG, "onActivityResult: URI: " + imageUri);
 
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContext().getContentResolver(), imageUri);
-                    if (bitmap != null)
-                        Log.d(TAG, "onActivityResult: Bitmap has a smth");
-                    BitmapManager bm = new BitmapManager();
-                    String bitmapStr = bm.bitmapToBase64(bitmap);
-                    if (!bitmapStr.isEmpty() || bitmapStr.length() > 0) {
-                        Intent addImageIntent = new Intent(getActivity(), AddImageQuotesActivity.class);
-                        addImageIntent.putExtra("BITMAP", bitmapStr);
-                        startActivity(addImageIntent);
-                    } else {
-                        Log.d(TAG, "onActivityResult: Converting bitmap to string is empty...");
-                    }
-                    // saveToImage(bitmap);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                Intent newIntent = new Intent(getActivity(), AddImageQuotesActivity.class);
+                newIntent.putExtra("IMAGE_URI", imageUri.toString());
+                startActivity(newIntent);
+//                try {
+//                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContext().getContentResolver(), imageUri);
+//                    BitmapManager bm = new BitmapManager();
+//                    bitmapStr = bm.bitmapToBase64(bitmap);
+//                    if (!bitmapStr.isEmpty() || bitmapStr.length() > 0) {
+//                        Intent addImageIntent = new Intent(getActivity(), AddImageQuotesActivity.class);
+//
+//
+//                        if (Build.VERSION.SDK_INT <= 23) {
+//                            //else after API 24, passing huge data ( > 1024 kb) with intent throws TransactionTooLargeException
+//                            addImageIntent.putExtra("BITMAP", bitmapStr);
+//                        } else {
+//                            SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("Shared_Pref", Context.MODE_PRIVATE);
+//                            SharedPreferences.Editor editor = sharedPreferences.edit();
+//                            editor.putString("BTM_STR", bitmapStr);
+//                            editor.commit();
+//                        }
+//                        startActivity(addImageIntent);
+//                    } else {
+//                        Log.d(TAG, "onActivityResult: Converting bitmap to string is empty...");
+//                    }
+//                    // saveToImage(bitmap);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
 
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
@@ -180,6 +189,9 @@ public class ImageQuotesList extends Fragment {
 
     }
 
+    public String getBitmapStr() {
+        return bitmapStr;
+    }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {

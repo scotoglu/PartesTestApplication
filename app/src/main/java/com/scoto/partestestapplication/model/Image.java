@@ -14,8 +14,11 @@ public class Image implements Parcelable {
     @ColumnInfo(name = "q_id")
     private int id;
 
-    @ColumnInfo(name = "image", typeAffinity = ColumnInfo.BLOB)
-    private byte[] image;
+//    @ColumnInfo(name = "image", typeAffinity = ColumnInfo.BLOB)
+//    private byte[] image;
+
+    @ColumnInfo(name = "image_path")
+    private String path;
 
     @ColumnInfo(name = "author")
     private String author;
@@ -30,8 +33,8 @@ public class Image implements Parcelable {
     private long timestamp;
 
 
-    public Image(byte[] image, String author, String bookTitle, String quoteTag) {
-        this.image = image;
+    public Image(String path, String author, String bookTitle, String quoteTag) {
+        this.path = path;
         this.bookTitle = bookTitle;
         this.author = author;
         this.quoteTag = quoteTag;
@@ -52,7 +55,7 @@ public class Image implements Parcelable {
 
     protected Image(Parcel in) {
         id = in.readInt();
-        image = in.createByteArray();
+        path = in.readString();
         author = in.readString();
         bookTitle = in.readString();
         quoteTag = in.readString();
@@ -71,12 +74,12 @@ public class Image implements Parcelable {
         this.id = id;
     }
 
-    public byte[] getImage() {
-        return image;
+    public String getPath() {
+        return path;
     }
 
-    public void setImage(byte[] image) {
-        this.image = image;
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public String getAuthor() {
@@ -115,7 +118,7 @@ public class Image implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
-        dest.writeByteArray(image);
+        dest.writeString(path);
         dest.writeString(author);
         dest.writeString(bookTitle);
         dest.writeString(quoteTag);

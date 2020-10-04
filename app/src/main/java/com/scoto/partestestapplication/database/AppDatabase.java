@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 import com.scoto.partestestapplication.model.Image;
 import com.scoto.partestestapplication.model.Quote;
 
-@Database(entities = {Quote.class, Image.class}, version = 3, exportSchema = false)
+@Database(entities = {Quote.class, Image.class}, version = 4, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract QuoteDao quoteDao();

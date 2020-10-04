@@ -1,10 +1,8 @@
 package com.scoto.partestestapplication;
 
-import android.app.SearchManager;
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -12,20 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.scoto.partestestapplication.adapter.ViewPagerAdapter;
-import com.scoto.partestestapplication.model.Quote;
+import com.scoto.partestestapplication.ui.ActivityAbout;
 import com.scoto.partestestapplication.ui.ImageQuotesList;
 import com.scoto.partestestapplication.ui.QuotesList;
-import com.scoto.partestestapplication.viewmodel.QuoteViewModel;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -71,21 +62,23 @@ public class MainActivity extends AppCompatActivity {
 //        return super.onCreateOptionsMenu(menu);
 //    }
 
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.setting:
-//                Toast.makeText(this, "Setting", Toast.LENGTH_SHORT).show();
-//                return true;
-//            case R.id.about:
-//                Toast.makeText(this, "About", Toast.LENGTH_SHORT).show();
-//                return true;
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-//
-//
-//    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.setting:
+                Toast.makeText(this, "Setting", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.about:
+                Intent aboutIntent = new Intent(MainActivity.this, ActivityAbout.class);
+                startActivity(aboutIntent);
+                Toast.makeText(this, "About", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

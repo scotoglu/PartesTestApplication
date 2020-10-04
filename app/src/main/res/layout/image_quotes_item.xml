@@ -65,7 +65,7 @@
                         android:layout_height="wrap_content"
                         android:transitionName="explode_image"
                         android:id="@+id/imageView"
-                        setImage="@{imagesQuote.image}"
+                        setImage="@{imagesQuote.path}"
                         android:adjustViewBounds="true"
                         android:padding="15dp"
                         android:scaleType="fitCenter"

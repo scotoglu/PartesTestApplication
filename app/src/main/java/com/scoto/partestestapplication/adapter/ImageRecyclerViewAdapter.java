@@ -2,7 +2,6 @@ package com.scoto.partestestapplication.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.scoto.partestestapplication.R;
 import com.scoto.partestestapplication.databinding.ImageQuotesItemBinding;
-import com.scoto.partestestapplication.helper.BitmapManager;
 import com.scoto.partestestapplication.model.Image;
 import com.scoto.partestestapplication.ui.DisplayImageFullScreen;
 
@@ -148,7 +146,6 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
         public ViewHolder(final ImageQuotesItemBinding imageQuotesItemBinding) {
             super(imageQuotesItemBinding.getRoot());
             this.binding = imageQuotesItemBinding;
-//            delete = imageQuotesItemBinding.getRoot().findViewById(R.id.delete);
             srcİmage = imageQuotesItemBinding.getRoot().findViewById(R.id.imageView);
             srcİmage.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -157,19 +154,9 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
 
                     final ImageView imageView = imageQuotesItemBinding.getRoot().findViewById(R.id.imageView);
 
-                    BitmapManager bm = new BitmapManager();
-
-                    byte[] image = getImageList().get(getAdapterPosition()).getImage();
-
-                    Bitmap bitmap = bm.byteToBitmap(image);
-                    String bitmapStr = bm.bitmapToBase64(bitmap);
-
 
                     Intent displayImageIntent = new Intent(mContext, DisplayImageFullScreen.class);
                     displayImageIntent.putExtra("IMAGE_OBJ", imageQuotes.get(getAdapterPosition()));
-//                    displayImageIntent.putExtra("BITMAP_STR", bitmapStr);
-//                    displayImageIntent.putExtra("TAG", imageQuotes.get(getAdapterPosition()).getQuoteTag());
-
 
                     if (Build.VERSION.SDK_INT > 20) {
                         ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(fr.getActivity(),
@@ -182,13 +169,6 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
                 }
             });
 
-//            delete.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Log.d(TAG, "onClick:Delete in image List ");
-//                    int pos = getAdapterPosition();
-//                }
-//            });
         }
 
         public void bind(Image image) {

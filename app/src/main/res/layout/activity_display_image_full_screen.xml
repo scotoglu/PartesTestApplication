@@ -1,45 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:background="#0A0A0B"
-    android:layout_height="match_parent"
-    tools:context=".ui.DisplayImageFullScreen">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
 
-    <TextView
-        android:id="@+id/bookInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
-        android:layout_marginTop="25dp"
-        android:text="Author,BookTitle"
-        android:textColor="#FFF"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <variable
+            name="Image"
+            type="com.scoto.partestestapplication.model.Image" />
+    </data>
 
-    <TextView
-        android:textColor="#E53935"
-
-        android:id="@+id/tagTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="25dp"
-        android:text="TAG"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.github.chrisbanes.photoview.PhotoView
-        android:id="@+id/display_image"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:adjustViewBounds="true"
-        android:padding="10dp"
-        android:src="@drawable/castle"
-        android:transitionName="explode_image" />
+        android:background="#0A0A0B"
+        tools:context=".ui.DisplayImageFullScreen">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/bookInfo"
+            author="@{Image.author}"
+            bookTitle="@{Image.bookTitle}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="25dp"
+            android:hint="Author,BookTitle"
+            android:textColor="#FFF"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tagTxt"
+            setTag="@{Image.quoteTag}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="15dp"
+            android:hint="TAG_OF_QUOTE"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.github.chrisbanes.photoview.PhotoView
+            android:id="@+id/display_image"
+            setPhotoViewImage="@{Image.path}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:padding="10dp"
+            android:src="@drawable/castle"
+            android:transitionName="explode_image" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
