@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@mipmap/bg_list_old"
-    tools:context=".ui.ImageQuotesList">
+    tools:context=".ui.imagequote.ImageQuotesList">
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -6,14 +6,14 @@
 
         <variable
             name="Image"
-            type="com.scoto.partestestapplication.model.Image" />
+            type="com.scoto.partestestapplication.data.model.Image" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#0A0A0B"
-        tools:context=".ui.DisplayImageFullScreen">
+        tools:context=".ui.imagequote.DisplayImageFullScreen">
 
 
         <TextView

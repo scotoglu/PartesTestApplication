@@ -14,35 +14,47 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_provider_paths" />
+        </provider>
+
         <activity
-            android:name=".ui.ActivityAbout"
-            android:parentActivityName=".MainActivity" />
-        <activity android:name=".SplashScreenActivity">
+            android:name=".ui.about.ActivityAbout"
+            android:parentActivityName=".ui.main.MainActivity" />
+        <activity android:name=".ui.splash.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+
             </intent-filter>
         </activity>
         <activity android:name=".ui.SettingsActivity" />
-        <activity android:name=".ui.DisplayImageFullScreen" />
+        <activity android:name=".ui.imagequote.DisplayImageFullScreen" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Theme.AppCompat" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.main.MainActivity"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.AddQuotesActivity"
-            android:parentActivityName=".MainActivity"
+            android:name=".ui.textquote.AddQuotesActivity"
+            android:parentActivityName=".ui.main.MainActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui.AddImageQuotesActivity"
-            android:parentActivityName=".MainActivity"
+            android:name=".ui.imagequote.AddImageQuotesActivity"
+            android:parentActivityName=".ui.main.MainActivity"
             android:windowSoftInputMode="adjustPan" />
 
         <meta-data

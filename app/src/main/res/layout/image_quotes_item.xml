@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
             name="imagesQuote"
-            type="com.scoto.partestestapplication.model.Image" />
+            type="com.scoto.partestestapplication.data.model.Image" />
 
     </data>
 
@@ -23,8 +22,8 @@
             android:layout_marginHorizontal="5dp"
             android:layout_marginTop="5dp"
             android:elevation="15dp"
-            app:cardElevation="0.7dp"
             app:cardCornerRadius="20dp"
+            app:cardElevation="0.7dp"
             app:cardMaxElevation="1dp"
             app:cardPreventCornerOverlap="true"
             app:contentPaddingBottom="0dp"
@@ -61,21 +60,21 @@
                         android:textSize="16sp" />
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:transitionName="explode_image"
                         android:id="@+id/imageView"
                         setImage="@{imagesQuote.path}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:adjustViewBounds="true"
-                        android:padding="15dp"
+                        android:paddingHorizontal="10dp"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/castle" />
+                        android:src="@drawable/castle"
+                        android:transitionName="explode_image" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:padding="5dp">
+                        android:padding="1dp">
 
                         <TextView
                             android:id="@+id/author"
@@ -89,30 +88,29 @@
                             android:hint="Author, Book Title"
                             android:padding="5dp"
                             android:textSize="16sp" />
-
-                        <!--                        <TextView-->
-                        <!--                            android:id="@+id/bookTitle"-->
-                        <!--                            android:layout_width="wrap_content"-->
-                        <!--                            android:layout_height="wrap_content"-->
-
-
-                        <!--                            android:hint="Book Title"-->
-                        <!--                            android:padding="5dp"-->
-                        <!--                            android:text="@{imagesQuote.bookTitle}"-->
-                        <!--                            android:textSize="16sp" />-->
-
-
-                        <!--                        <ImageView-->
-                        <!--                            android:id="@+id/delete"-->
-                        <!--                            android:layout_width="wrap_content"-->
-                        <!--                            android:layout_height="wrap_content"-->
-                        <!--                            android:layout_alignParentEnd="true"-->
-                        <!--                            android:layout_margin="5dp"-->
-                        <!--                            android:layout_marginRight="25dp"-->
-                        <!--                            android:padding="5dp"-->
-                        <!--                            android:src="@drawable/ic_delete" />-->
                     </RelativeLayout>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <ImageView
+                            android:id="@+id/editImageQuote"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="5dp"
+                            android:src="@drawable/ic_edit" />
+
+                        <ImageView
+                            android:id="@+id/shareImageQuote"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="5dp"
+                            android:src="@drawable/ic_share" />
+                    </LinearLayout>
                 </LinearLayout>
 
 
