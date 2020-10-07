@@ -101,15 +101,22 @@
                             android:id="@+id/editImageQuote"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="5dp"
+                            android:layout_marginHorizontal="15dp"
                             android:src="@drawable/ic_edit" />
 
                         <ImageView
                             android:id="@+id/shareImageQuote"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="5dp"
+                            android:layout_marginHorizontal="15dp"
                             android:src="@drawable/ic_share" />
+
+                        <ImageView
+                            android:id="@+id/delete"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="15dp"
+                            android:src="@drawable/ic_delete" />
                     </LinearLayout>
                 </LinearLayout>
 

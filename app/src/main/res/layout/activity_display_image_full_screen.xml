@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -9,7 +10,7 @@
             type="com.scoto.partestestapplication.data.model.Image" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#0A0A0B"
@@ -20,17 +21,21 @@
             android:id="@+id/bookInfo"
             author="@{Image.author}"
             bookTitle="@{Image.bookTitle}"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
             android:layout_marginTop="25dp"
+            android:layout_marginRight="20dp"
             android:hint="Author,BookTitle"
+            android:maxWidth="200dp"
+            android:textAlignment="center"
             android:textColor="#FFF"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:textAlignment="center"
             android:id="@+id/tagTxt"
             setTag="@{Image.quoteTag}"
             android:layout_width="wrap_content"

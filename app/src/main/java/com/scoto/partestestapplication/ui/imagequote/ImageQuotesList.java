@@ -172,48 +172,48 @@ public class ImageQuotesList extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.scrollToPosition(0);
         recyclerView.setAdapter(viewAdapter);
-        swipeToDelete();
+//        swipeToDelete();
     }
 
-    private void swipeToDelete() {
-        Log.d(TAG, "swipeToDelete: SwipeToDelete Active...");
-        SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(getContext()) {
-            @Override
-            public void onSwiped(@NonNull final RecyclerView.ViewHolder viewHolder, int direction) {
-                super.onSwiped(viewHolder, direction);
-                final int pos = viewHolder.getAdapterPosition();
-                final Image image = viewAdapter.getImageList().get(pos);
-                viewAdapter.removeItem(pos, image);
-
-                Snackbar snackbar = Snackbar.make(frameLayout, "Item was removed.", BaseTransientBottomBar.LENGTH_LONG);
-                snackbar.setAction("UNDO", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        viewAdapter.restoreItem(image, pos);
-                        recyclerView.scrollToPosition(pos);
-                    }
-                });
-                snackbar.setActionTextColor(Color.YELLOW);
-                snackbar.show();
-                snackbar.addCallback(new Snackbar.Callback() {
-                    @Override
-                    public void onShown(Snackbar sb) {
-                        super.onShown(sb);
-                    }
-
-                    @Override
-                    public void onDismissed(Snackbar transientBottomBar, int event) {
-                        super.onDismissed(transientBottomBar, event);
-                        if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
-                            quoteViewModel.deleteImages(image);
-                        }
-                    }
-                });
-            }
-        };
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeToDeleteCallback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
-    }
+//    private void swipeToDelete() {
+//        Log.d(TAG, "swipeToDelete: SwipeToDelete Active...");
+//        SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(getContext()) {
+//            @Override
+//            public void onSwiped(@NonNull final RecyclerView.ViewHolder viewHolder, int direction) {
+//                super.onSwiped(viewHolder, direction);
+//                final int pos = viewHolder.getAdapterPosition();
+//                final Image image = viewAdapter.getImageList().get(pos);
+//                viewAdapter.removeItem(pos, image);
+//
+//                Snackbar snackbar = Snackbar.make(frameLayout, "Item was removed.", BaseTransientBottomBar.LENGTH_LONG);
+//                snackbar.setAction("UNDO", new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        viewAdapter.restoreItem(image, pos);
+//                        recyclerView.scrollToPosition(pos);
+//                    }
+//                });
+//                snackbar.setActionTextColor(Color.YELLOW);
+//                snackbar.show();
+//                snackbar.addCallback(new Snackbar.Callback() {
+//                    @Override
+//                    public void onShown(Snackbar sb) {
+//                        super.onShown(sb);
+//                    }
+//
+//                    @Override
+//                    public void onDismissed(Snackbar transientBottomBar, int event) {
+//                        super.onDismissed(transientBottomBar, event);
+//                        if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
+//                            quoteViewModel.deleteImages(image);
+//                        }
+//                    }
+//                });
+//            }
+//        };
+//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeToDeleteCallback);
+//        itemTouchHelper.attachToRecyclerView(recyclerView);
+//    }
 
     private void setEmptyList(boolean isEmptyList) {
         if (isEmptyList)

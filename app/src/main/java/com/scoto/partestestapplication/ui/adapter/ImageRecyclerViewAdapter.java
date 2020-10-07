@@ -2,6 +2,7 @@ package com.scoto.partestestapplication.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
@@ -17,8 +18,10 @@ import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.scoto.partestestapplication.BuildConfig;
 import com.scoto.partestestapplication.R;
 import com.scoto.partestestapplication.data.model.Image;
@@ -26,6 +29,7 @@ import com.scoto.partestestapplication.databinding.ImageQuotesItemBinding;
 import com.scoto.partestestapplication.ui.imagequote.AddImageQuotesActivity;
 import com.scoto.partestestapplication.ui.imagequote.DisplayImageFullScreen;
 import com.scoto.partestestapplication.ui.main.MainActivity;
+import com.scoto.partestestapplication.ui.viewmodel.QuoteViewModel;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -36,6 +40,7 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
     private Context mContext;
     private List<Image> imageQuotes;
     private List<Image> filteredList;
+    private QuoteViewModel quoteViewModel;
 
     private Fragment fr;
     private ImageRecyclerViewAdapter imageRecyclerViewAdapter;
@@ -46,7 +51,7 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
         this.mContext = context;
         this.fr = fragment;
         this.filteredList = new ArrayList<>();//Initialize the filtered list
-
+        quoteViewModel = ViewModelProviders.of(fragment).get(QuoteViewModel.class);
     }
 
 
@@ -149,17 +154,18 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ImageQuotesItemBinding binding;
-        private ImageView delete, srcİmage;
-        final ImageView edit, share;
+        private ImageView delete, srcImage, edit, share;
 
         public ViewHolder(final ImageQuotesItemBinding imageQuotesItemBinding) {
             super(imageQuotesItemBinding.getRoot());
             this.binding = imageQuotesItemBinding;
 
+
             edit = imageQuotesItemBinding.getRoot().findViewById(R.id.editImageQuote);
             share = imageQuotesItemBinding.getRoot().findViewById(R.id.shareImageQuote);
-            srcİmage = imageQuotesItemBinding.getRoot().findViewById(R.id.imageView);
-            srcİmage.setOnClickListener(new View.OnClickListener() {
+            delete = imageQuotesItemBinding.getRoot().findViewById(R.id.delete);
+            srcImage = imageQuotesItemBinding.getRoot().findViewById(R.id.imageView);
+            srcImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -210,6 +216,40 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
                 }
             });
 
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final int pos = getAdapterPosition();
+                    final Image img = getImageList().get(pos);
+                    removeItem(pos, img);
+                    Snackbar snackbar = Snackbar.make(v, "Item was removed", 2000);
+                    snackbar.setAction("UNDO", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            restoreItem(img, pos);
+                        }
+                    });
+                    snackbar.setActionTextColor(Color.YELLOW);
+                    snackbar.show();
+                    snackbar.addCallback(new Snackbar.Callback() {
+                        @Override
+                        public void onShown(Snackbar sb) {
+                            super.onShown(sb);
+                            Log.d(TAG, "onShown: Snackbar on shown");
+                        }
+
+                        @Override
+                        public void onDismissed(Snackbar transientBottomBar, int event) {
+                            super.onDismissed(transientBottomBar, event);
+                            Log.d(TAG, "onDismissed: Snackbar on dismissed");
+                            if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
+                                Log.d(TAG, "onDismissed: TIMEOUT");
+                                quoteViewModel.deleteImages(img);
+                            }
+                        }
+                    });
+                }
+            });
         }
 
         public void bind(Image image) {

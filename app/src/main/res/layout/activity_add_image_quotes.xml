@@ -51,6 +51,7 @@
                 android:id="@+id/author"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/advent_pro_medium"
                 android:hint="Type Author..."
                 android:inputType="textAutoComplete"
                 android:textSize="18sp" />
@@ -79,6 +80,7 @@
                 android:id="@+id/bookTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/advent_pro_medium"
                 android:hint="Type Book Title..."
                 android:inputType="textAutoComplete"
                 android:textSize="18sp" />
@@ -106,6 +108,7 @@
                 android:id="@+id/tag"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/advent_pro_medium"
                 android:hint="Type Tag..."
                 android:inputType="textAutoComplete"
                 android:textSize="18sp" />

@@ -173,9 +173,7 @@ public class QuotesList extends Fragment {
                     @Override
                     public void onDismissed(Snackbar transientBottomBar, int event) {
                         super.onDismissed(transientBottomBar, event);
-                        Log.d(TAG, "onDismissed: Snackbar on dismissed");
                         if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
-                            Log.d(TAG, "onDismissed: TIMEOUT");
                             quoteViewModel.delete(q);
                         }
                     }

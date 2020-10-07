@@ -2,12 +2,15 @@ package com.scoto.partestestapplication.ui.textquote;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,9 +32,54 @@ public class AddQuotesActivity extends AppCompatActivity implements View.OnFocus
     private ImageView quoteImageView, authorImageView, bookTitleImageView, publisherImageView, releaseDataImageView, pageOfQuoteImageView;
     private QuoteViewModel quoteViewModel;
     private Quote passedQuote = null;
-    private Bundle quoteObjectBundle;
+    private TextView remainChar;
     private Dialogs dialogs;
+    private TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            remainChar.setText(220 - s.toString().length() + "/ 220");
+        }
+    };
+
+
+    private void setDataToFields() {
+        //When user edit the quotes,set fields with existence data.
+        quoteTxt.setText(passedQuote.getQuote());
+        authorTxt.setText(passedQuote.getAuthor());
+        publisherTxt.setText(passedQuote.getPublisher());
+        bookTitleTxt.setText(passedQuote.getBookTitle());
+        pageOfQuoteTxt.setText(passedQuote.getPageOfQuote());
+        releaseDateTxt.setText(passedQuote.getReleaseDate());
+    }
+
+    private void getContents() {
+        //When user adding new quote,gets data from EditText
+        quote = quoteTxt.getText().toString();
+        author = authorTxt.getText().toString();
+        bookTitle = bookTitleTxt.getText().toString();
+        publisher = publisherTxt.getText().toString();
+        pageOfQuote = pageOfQuoteTxt.getText().toString();
+        releaseDate = releaseDateTxt.getText().toString();
+    }
+
+    private void setViewReference() {
+        quoteImageView = findViewById(R.id.quoteImageView);
+        authorImageView = findViewById(R.id.authorImageView);
+        bookTitleImageView = findViewById(R.id.bookTitleImageView);
+        publisherImageView = findViewById(R.id.publisherImageView);
+        pageOfQuoteImageView = findViewById(R.id.pageOfQuoteImageView);
+        releaseDataImageView = findViewById(R.id.releaseDateImageView);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,6 +93,8 @@ public class AddQuotesActivity extends AppCompatActivity implements View.OnFocus
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        remainChar = findViewById(R.id.remainChar);
 
 
         getSupportActionBar().setTitle("Add Quote");
@@ -109,57 +159,6 @@ public class AddQuotesActivity extends AppCompatActivity implements View.OnFocus
         if (passedQuote != null)
             setDataToFields();
 
-    }
-
-
-    private void setDataToFields() {
-        //When user edit the quotes,set fields with existence data.
-        quoteTxt.setText(passedQuote.getQuote());
-        authorTxt.setText(passedQuote.getAuthor());
-        publisherTxt.setText(passedQuote.getPublisher());
-        bookTitleTxt.setText(passedQuote.getBookTitle());
-        pageOfQuoteTxt.setText(passedQuote.getPageOfQuote());
-        releaseDateTxt.setText(passedQuote.getReleaseDate());
-    }
-
-    private void getContents() {
-        //When user adding new quote,gets data from EditText
-        quote = quoteTxt.getText().toString();
-        author = authorTxt.getText().toString();
-        bookTitle = bookTitleTxt.getText().toString();
-        publisher = publisherTxt.getText().toString();
-        pageOfQuote = pageOfQuoteTxt.getText().toString();
-        releaseDate = releaseDateTxt.getText().toString();
-    }
-
-    private void setViewReference() {
-        quoteImageView = findViewById(R.id.quoteImageView);
-        authorImageView = findViewById(R.id.authorImageView);
-        bookTitleImageView = findViewById(R.id.bookTitleImageView);
-        publisherImageView = findViewById(R.id.publisherImageView);
-        pageOfQuoteImageView = findViewById(R.id.pageOfQuoteImageView);
-        releaseDataImageView = findViewById(R.id.releaseDateImageView);
-    }
-
-    private void setEditTextReference() {
-        //EditTexts
-        quoteTxt = findViewById(R.id.quote);
-        quoteTxt.setOnFocusChangeListener(this);
-
-        authorTxt = findViewById(R.id.author);
-        authorTxt.setOnFocusChangeListener(this);
-
-        bookTitleTxt = findViewById(R.id.bookTitle);
-        bookTitleTxt.setOnFocusChangeListener(this);
-
-        publisherTxt = findViewById(R.id.publisher);
-        publisherTxt.setOnFocusChangeListener(this);
-
-        pageOfQuoteTxt = findViewById(R.id.pageOfQuote);
-        pageOfQuoteTxt.setOnFocusChangeListener(this);
-
-        releaseDateTxt = findViewById(R.id.releaseDate);
-        releaseDateTxt.setOnFocusChangeListener(this);
     }
 
     // TODO, write a CustomView for EditText or ImageView for onFocusChangeListener
@@ -235,5 +234,26 @@ public class AddQuotesActivity extends AppCompatActivity implements View.OnFocus
         v.setLayoutParams(params);
     }
 
+    private void setEditTextReference() {
+        //EditTexts
+        quoteTxt = findViewById(R.id.quote);
+        quoteTxt.setOnFocusChangeListener(this);
+        quoteTxt.addTextChangedListener(textWatcher);
+
+        authorTxt = findViewById(R.id.author);
+        authorTxt.setOnFocusChangeListener(this);
+
+        bookTitleTxt = findViewById(R.id.bookTitle);
+        bookTitleTxt.setOnFocusChangeListener(this);
+
+        publisherTxt = findViewById(R.id.publisher);
+        publisherTxt.setOnFocusChangeListener(this);
+
+        pageOfQuoteTxt = findViewById(R.id.pageOfQuote);
+        pageOfQuoteTxt.setOnFocusChangeListener(this);
+
+        releaseDateTxt = findViewById(R.id.releaseDate);
+        releaseDateTxt.setOnFocusChangeListener(this);
+    }
 
 }

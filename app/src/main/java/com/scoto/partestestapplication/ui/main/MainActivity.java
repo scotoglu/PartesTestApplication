@@ -17,6 +17,7 @@ import com.scoto.partestestapplication.ui.adapter.ViewPagerAdapter;
 import com.scoto.partestestapplication.ui.imagequote.ImageQuotesList;
 import com.scoto.partestestapplication.ui.textquote.QuotesList;
 
+
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private Toolbar toolbar;
@@ -26,23 +27,6 @@ public class MainActivity extends AppCompatActivity {
     private ImageQuotesList imageQuotesList;
 
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.setting:
-                Toast.makeText(this, "Setting", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.about:
-                Intent aboutIntent = new Intent(MainActivity.this, ActivityAbout.class);
-                startActivity(aboutIntent);
-                Toast.makeText(this, "About", Toast.LENGTH_SHORT).show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,5 +54,28 @@ public class MainActivity extends AppCompatActivity {
 
         viewPager.setAdapter(viewPagerAdapter);
 
+
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.setting:
+                Toast.makeText(this, "Setting", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.about:
+                Intent aboutIntent = new Intent(MainActivity.this, ActivityAbout.class);
+                startActivity(aboutIntent);
+                Toast.makeText(this, "About", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

@@ -31,7 +31,7 @@
         <activity android:name=".ui.splash.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <category android:name="android.intent.category.LAUNCHER" />
 
             </intent-filter>
         </activity>
@@ -44,8 +44,8 @@
             android:name=".ui.main.MainActivity"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER" />
-                <action android:name="android.intent.action.MAIN" />
+
+            <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity

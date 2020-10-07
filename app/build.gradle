@@ -66,4 +66,7 @@ dependencies {
     //PhotoView for Zoom
     implementation 'com.github.chrisbanes:PhotoView:2.0.0'
 
+//    //LeakCanary for detection of memory leaks
+//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.5'
+
 }
