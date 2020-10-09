@@ -58,12 +58,9 @@ public class AddImageQuotesActivity extends AppCompatActivity implements View.On
 
 
         Bundle bundle = getIntent().getExtras();
-        //Adding new image quote
 
 
-        //update image quote
-
-
+        //Adding
         if (bundle.getString("IMAGE_URI") != null) {
             imageUri = Uri.parse(bundle.getString("IMAGE_URI"));
 
@@ -72,6 +69,8 @@ public class AddImageQuotesActivity extends AppCompatActivity implements View.On
             Log.d(TAG, "onCreate: ImageUri is empty");
         }
 
+
+        //Editing
         if (bundle.getParcelable("IMAGE_OBJ") != null) {
             image = (Image) bundle.getParcelable("IMAGE_OBJ");
             setDataToFields();

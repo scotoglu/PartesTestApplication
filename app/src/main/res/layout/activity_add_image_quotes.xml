@@ -111,6 +111,7 @@
                 android:fontFamily="@font/advent_pro_medium"
                 android:hint="Type Tag..."
                 android:inputType="textAutoComplete"
+                android:maxLength="25"
                 android:textSize="18sp" />
         </LinearLayout>
 

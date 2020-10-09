@@ -96,7 +96,7 @@ public class Dialogs extends DialogFragment {
                 contentOfContainer.setImageDrawable(ContextCompat.getDrawable(getContext(), R.mipmap.refresh1));
                 break;
             case -1:
-                contentOfContainer.setImageDrawable(ContextCompat.getDrawable(getContext(), R.mipmap.empty_128x1281));
+                contentOfContainer.setImageDrawable(ContextCompat.getDrawable(getContext(), R.mipmap.empty1));
                 break;
             default:
                 contentOfContainer.setImageDrawable(ContextCompat.getDrawable(getContext(), R.mipmap.tick1));

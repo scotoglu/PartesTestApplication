@@ -2,8 +2,6 @@ package com.scoto.partestestapplication.ui.imagequote;
 
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,7 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,18 +21,14 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.BaseTransientBottomBar;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.scoto.partestestapplication.R;
-import com.scoto.partestestapplication.ui.adapter.ImageRecyclerViewAdapter;
-import com.scoto.partestestapplication.ui.adapter.callback.SwipeToDeleteCallback;
 import com.scoto.partestestapplication.data.model.Image;
+import com.scoto.partestestapplication.ui.adapter.ImageRecyclerViewAdapter;
 import com.scoto.partestestapplication.ui.viewmodel.QuoteViewModel;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -44,7 +38,7 @@ import java.util.List;
 import static android.app.Activity.RESULT_OK;
 
 
-public class ImageQuotesList extends Fragment {
+public class ImageQuotesList extends Fragment implements View.OnClickListener {
     private static final String TAG = "ImageQuotesList";
 
     private FloatingActionButton addImgQuote;
@@ -53,7 +47,7 @@ public class ImageQuotesList extends Fragment {
     private List<Image> imageList;
     private TabLayout tabLayout;
     private FrameLayout frameLayout;
-    private TextView emptyList;
+    private LinearLayout emptyList;
     private QuoteViewModel quoteViewModel;
 
     private String bitmapStr;
@@ -93,23 +87,15 @@ public class ImageQuotesList extends Fragment {
         View v = inflater.inflate(R.layout.fragment_image_quotes_list, container, false);
         recyclerView = v.findViewById(R.id.imageRecyclerList);
         frameLayout = v.findViewById(R.id.imageFrameLayout);
-        emptyList = v.findViewById(R.id.imageEmptyList);
+        emptyList = v.findViewById(R.id.empty_and_add);
+
+        emptyList.setOnClickListener(this);
         tabLayout = v.findViewById(R.id.tab_layout);
         addImgQuote = v.findViewById(R.id.addImgQuote);
-        addImgQuote.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: Add image Quote Clicked...");
+        addImgQuote.setOnClickListener(this);
 
-                CropImage.activity().setGuidelines(CropImageView.Guidelines.ON).setAutoZoomEnabled(true)
-                        .setCropShape(CropImageView.CropShape.RECTANGLE)
-                        .setAspectRatio(1, 1)
-                        .setNoOutputImage(false)
-
-                        .start(getContext(), ImageQuotesList.this);
-            }
-        });
         setRecyclerView();
+
         return v;
     }
 
@@ -164,7 +150,6 @@ public class ImageQuotesList extends Fragment {
 
 
     private void setRecyclerView() {
-
         Log.d(TAG, "setRecyclerView: setRecyclerView Active ...");
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
@@ -172,48 +157,8 @@ public class ImageQuotesList extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.scrollToPosition(0);
         recyclerView.setAdapter(viewAdapter);
-//        swipeToDelete();
-    }
 
-//    private void swipeToDelete() {
-//        Log.d(TAG, "swipeToDelete: SwipeToDelete Active...");
-//        SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(getContext()) {
-//            @Override
-//            public void onSwiped(@NonNull final RecyclerView.ViewHolder viewHolder, int direction) {
-//                super.onSwiped(viewHolder, direction);
-//                final int pos = viewHolder.getAdapterPosition();
-//                final Image image = viewAdapter.getImageList().get(pos);
-//                viewAdapter.removeItem(pos, image);
-//
-//                Snackbar snackbar = Snackbar.make(frameLayout, "Item was removed.", BaseTransientBottomBar.LENGTH_LONG);
-//                snackbar.setAction("UNDO", new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        viewAdapter.restoreItem(image, pos);
-//                        recyclerView.scrollToPosition(pos);
-//                    }
-//                });
-//                snackbar.setActionTextColor(Color.YELLOW);
-//                snackbar.show();
-//                snackbar.addCallback(new Snackbar.Callback() {
-//                    @Override
-//                    public void onShown(Snackbar sb) {
-//                        super.onShown(sb);
-//                    }
-//
-//                    @Override
-//                    public void onDismissed(Snackbar transientBottomBar, int event) {
-//                        super.onDismissed(transientBottomBar, event);
-//                        if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
-//                            quoteViewModel.deleteImages(image);
-//                        }
-//                    }
-//                });
-//            }
-//        };
-//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeToDeleteCallback);
-//        itemTouchHelper.attachToRecyclerView(recyclerView);
-//    }
+    }
 
     private void setEmptyList(boolean isEmptyList) {
         if (isEmptyList)
@@ -226,24 +171,19 @@ public class ImageQuotesList extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume: Fragment onResume...");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d(TAG, "onPause: Fragment onPause");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d(TAG, "onStop: Fragment onStopped");
         if (menuItem != null) {
             menuItem.collapseActionView();
         }
-
     }
 
 
+    @Override
+    public void onClick(View v) {
+        CropImage.activity().setGuidelines(CropImageView.Guidelines.ON).setAutoZoomEnabled(true)
+                .setCropShape(CropImageView.CropShape.RECTANGLE)
+                .setAspectRatio(1, 1)
+                .setNoOutputImage(false)
+
+                .start(getContext(), ImageQuotesList.this);
+    }
 }

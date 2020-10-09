@@ -21,12 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="5dp"
             android:layout_marginTop="5dp"
-            android:elevation="15dp"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="0.7dp"
-            app:cardMaxElevation="1dp"
-            app:cardPreventCornerOverlap="true"
-            app:contentPaddingBottom="0dp"
+            app:cardCornerRadius="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -43,7 +38,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="5dp">
+                    android:padding="3dp">
 
                     <TextView
                         android:id="@+id/tag"
@@ -86,7 +81,7 @@
                             android:layout_marginLeft="5dp"
                             android:fontFamily="@font/advent_pro_medium"
                             android:hint="Author, Book Title"
-                            android:padding="5dp"
+                            android:padding="3dp"
                             android:textSize="16sp" />
                     </RelativeLayout>
 
@@ -95,28 +90,27 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:orientation="horizontal"
-                        android:padding="5dp">
+                        android:padding="2dp">
 
                         <ImageView
                             android:id="@+id/editImageQuote"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="15dp"
                             android:src="@drawable/ic_edit" />
 
                         <ImageView
                             android:id="@+id/shareImageQuote"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="15dp"
+                            android:layout_marginLeft="20dp"
                             android:src="@drawable/ic_share" />
 
                         <ImageView
                             android:id="@+id/delete"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="15dp"
-                            android:src="@drawable/ic_delete" />
+                            android:layout_marginLeft="20dp"
+                            android:src="@drawable/ic_delete_24" />
                     </LinearLayout>
                 </LinearLayout>
 

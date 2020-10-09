@@ -43,7 +43,6 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
     private QuoteViewModel quoteViewModel;
 
     private Fragment fr;
-    private ImageRecyclerViewAdapter imageRecyclerViewAdapter;
     private MyFilter myFilter;
 
     public ImageRecyclerViewAdapter(Context context, List<Image> imageQuotes, Fragment fragment) {

@@ -9,4 +9,5 @@
     <color name="cards_color">#84FFDA79</color>
     <color name="transparent">#C8DFDBDB</color>
     <color name="fab_bg_tint">#CCF4F1A3</color>
+    <color name="colorPrimary_2">#FFB300</color>
 </resources>

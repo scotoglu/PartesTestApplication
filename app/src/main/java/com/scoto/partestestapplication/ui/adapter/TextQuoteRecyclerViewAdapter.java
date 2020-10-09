@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,14 +15,18 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.scoto.partestestapplication.ui.main.MainActivity;
+import com.google.android.material.snackbar.Snackbar;
 import com.scoto.partestestapplication.R;
-import com.scoto.partestestapplication.databinding.ListItemQuotesBinding;
-import com.scoto.partestestapplication.utils.StringFormatter;
 import com.scoto.partestestapplication.data.model.Quote;
+import com.scoto.partestestapplication.databinding.ListItemQuotesBinding;
+import com.scoto.partestestapplication.ui.main.MainActivity;
 import com.scoto.partestestapplication.ui.textquote.AddQuotesActivity;
+import com.scoto.partestestapplication.ui.viewmodel.QuoteViewModel;
+import com.scoto.partestestapplication.utils.StringFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,13 +38,15 @@ public class TextQuoteRecyclerViewAdapter extends RecyclerView.Adapter<TextQuote
 
     private Context context;
     private List<Quote> quoteTextList;
-
+    private QuoteViewModel quoteViewModel;
     private List<Quote> filteredList;
     private MyFilter filter;
+    private Fragment fragment;
 
-
-    public TextQuoteRecyclerViewAdapter() {
+    public TextQuoteRecyclerViewAdapter(Fragment fragment) {
         Log.d(TAG, "RecyclerViewAdapter: Constructor...");
+        this.fragment = fragment;
+        quoteViewModel = ViewModelProviders.of(fragment).get(QuoteViewModel.class);
     }
 
 
@@ -153,7 +160,7 @@ public class TextQuoteRecyclerViewAdapter extends RecyclerView.Adapter<TextQuote
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private ListItemQuotesBinding binding;
-        private ImageView share, copy, edit;
+        private ImageView share, copy, edit, delete;
 
         public ViewHolder(ListItemQuotesBinding listItemQuotesBinding) {
             super(listItemQuotesBinding.getRoot());
@@ -161,6 +168,7 @@ public class TextQuoteRecyclerViewAdapter extends RecyclerView.Adapter<TextQuote
             share = listItemQuotesBinding.getRoot().findViewById(R.id.shareQuote);
             copy = listItemQuotesBinding.getRoot().findViewById(R.id.copyQuote);
             edit = listItemQuotesBinding.getRoot().findViewById(R.id.editQuote);
+            delete = listItemQuotesBinding.getRoot().findViewById(R.id.delete);
 
             share.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -195,6 +203,39 @@ public class TextQuoteRecyclerViewAdapter extends RecyclerView.Adapter<TextQuote
                     editIntent.putExtra("quoteInfo", quoteTextList.get(getAdapterPosition()));
                     mainActivity.startActivity(editIntent);
                     //  mainActivity.overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
+
+                }
+            });
+
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final int pos = getAdapterPosition();
+                    final Quote quote = quoteTextList.get(pos);
+                    removeItem(pos, quote);
+                    Snackbar snackbar = Snackbar.make(v, "Item was removed.", 2000);
+                    snackbar.setAction("UNDO", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            restoreItem(quote, pos);
+                        }
+                    });
+                    snackbar.setActionTextColor(Color.YELLOW);
+                    snackbar.show();
+                    snackbar.addCallback(new Snackbar.Callback() {
+                        @Override
+                        public void onShown(Snackbar sb) {
+                            super.onShown(sb);
+                        }
+
+                        @Override
+                        public void onDismissed(Snackbar transientBottomBar, int event) {
+                            super.onDismissed(transientBottomBar, event);
+                            if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
+                                quoteViewModel.delete(quote);
+                            }
+                        }
+                    });
 
                 }
             });

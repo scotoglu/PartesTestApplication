@@ -3,8 +3,7 @@
     <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
 
-
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">#FFB300</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:statusBarColor">@color/status_bar</item>
@@ -26,6 +25,9 @@
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowBackground">@color/cards_color</item>
 
+    </style>
 
+    <style name="SplashTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/colorPrimary_2</item>
     </style>
 </resources>

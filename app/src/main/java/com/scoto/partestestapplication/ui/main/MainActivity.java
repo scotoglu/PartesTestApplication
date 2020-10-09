@@ -61,9 +61,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.setting:
-                Toast.makeText(this, "Setting", Toast.LENGTH_SHORT).show();
-                return true;
+
             case R.id.about:
                 Intent aboutIntent = new Intent(MainActivity.this, ActivityAbout.class);
                 startActivity(aboutIntent);
