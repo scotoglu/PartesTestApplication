@@ -2,7 +2,6 @@ package com.scoto.partestestapplication.ui;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,26 +14,37 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.scoto.partestestapplication.R;
+import com.scoto.partestestapplication.utils.OperationTypeDef;
+
 
 public class Dialogs extends DialogFragment {
     public static final String TAG = "Dialogs";
     private TextView msg;
     private ImageView contentOfContainer;
     private ImageView container;
-    private int OPERATION_CODE = 1;
+
+
+//    @Retention(RetentionPolicy.SOURCE)
+//    @IntDef({OperationTypeDef.SUCCESS, OperationTypeDef.FAILURE, OperationTypeDef.UPDATE, OperationTypeDef.EMPTY_FIELD})
+//    public @interface OperationTypeDef {
+//        int SUCCESS = 1;
+//        int FAILURE = 0;
+//        int UPDATE = 2;
+//        int EMPTY_FIELD = -1;
+//    }
+
 
     public Dialogs() {
-        Log.d(TAG, "Dialogs: Called");
+
         //Empty Constructor is required for Dialog Fragment
         //Make sure not to add arguments to the constructor
         //Use 'newInstance' instead shown below
 
     }
 
-    public static Dialogs newInstance(String msg, int OPERATION_CODE) {
+    public static Dialogs newInstance(String msg, @OperationTypeDef int OPERATION_CODE) {
 
         Bundle args = new Bundle();
-
         Dialogs fragment = new Dialogs();
         args.putInt("operation_code", OPERATION_CODE);
         args.putString("message", msg);
@@ -80,7 +90,6 @@ public class Dialogs extends DialogFragment {
         if (getArguments().getString("message") != null) {
             String message = getArguments().getString("message");
             if (message.length() > 0) {
-                Log.d(TAG, "onViewCreated: Message: " + message);
                 msg.setText(message);
             }
 
@@ -89,20 +98,23 @@ public class Dialogs extends DialogFragment {
         int code = getArguments().getInt("operation_code");
 
         switch (code) {
-            case 0:
+            case OperationTypeDef.FAILURE:
                 contentOfContainer.setImageDrawable(ContextCompat.getDrawable(getContext(), R.mipmap.close1));
                 break;
-            case 2:
+            case OperationTypeDef.UPDATE:
                 contentOfContainer.setImageDrawable(ContextCompat.getDrawable(getContext(), R.mipmap.refresh1));
                 break;
-            case -1:
-                contentOfContainer.setImageDrawable(ContextCompat.getDrawable(getContext(), R.mipmap.empty1));
+            case OperationTypeDef.EMPTY_FIELD:
+                contentOfContainer.setImageDrawable(ContextCompat.getDrawable(getContext(), R.mipmap.empty));
+                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) contentOfContainer.getLayoutParams();
+                params.setMargins(0, 0, 0, 0);
+                msg.setTextSize(18);
                 break;
-            default:
+            case OperationTypeDef.SUCCESS:
                 contentOfContainer.setImageDrawable(ContextCompat.getDrawable(getContext(), R.mipmap.tick1));
                 break;
-
-
+            default:
+                break;
         }
 
 

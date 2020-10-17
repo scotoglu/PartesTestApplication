@@ -5,7 +5,6 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,21 +29,20 @@ import com.scoto.partestestapplication.utils.StringFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 public class TextQuoteRecyclerViewAdapter extends RecyclerView.Adapter<TextQuoteRecyclerViewAdapter.ViewHolder> implements Filterable {
-    private static final String TAG = "RecyclerViewAdapter";
-
-
     private Context context;
     private List<Quote> quoteTextList;
     private QuoteViewModel quoteViewModel;
     private List<Quote> filteredList;
     private MyFilter filter;
     private Fragment fragment;
+    private List<Quote> deleteQuery = new ArrayList<>();
 
     public TextQuoteRecyclerViewAdapter(Fragment fragment) {
-        Log.d(TAG, "RecyclerViewAdapter: Constructor...");
+
         this.fragment = fragment;
         quoteViewModel = ViewModelProviders.of(fragment).get(QuoteViewModel.class);
     }
@@ -71,12 +69,12 @@ public class TextQuoteRecyclerViewAdapter extends RecyclerView.Adapter<TextQuote
     }
 
     public List<Quote> getQuoteList() {
-        Log.d(TAG, "getQuoteList: GetQuoteList");
+
         return quoteTextList;
     }
 
     public void setQuoteList(List<Quote> quoteList) {
-        Log.d(TAG, "setQuoteList: Quote List Setter");
+
         this.quoteTextList = quoteList;
         notifyDataSetChanged();//Do not forget !!!
         /*When I have forgotten to write. Didn't add new item properly.
@@ -96,7 +94,7 @@ public class TextQuoteRecyclerViewAdapter extends RecyclerView.Adapter<TextQuote
 
     @Override
     public Filter getFilter() {
-        Log.d(TAG, "getFilter: Active...");
+
         if (filter == null) {
             filteredList = new ArrayList<>();
             filteredList.clear();
@@ -107,7 +105,7 @@ public class TextQuoteRecyclerViewAdapter extends RecyclerView.Adapter<TextQuote
     }
 
     public void setContext(Context context) {
-        Log.d(TAG, "setContext: Context Setter");
+
         this.context = context;
     }
 
@@ -127,17 +125,17 @@ public class TextQuoteRecyclerViewAdapter extends RecyclerView.Adapter<TextQuote
 
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            Log.d(TAG, "performFiltering: Method CALLED.");
+
             filteredList.clear();
             final FilterResults filterResults = new FilterResults();
             if (constraint.length() == 0) {
                 //Searching not started,yet
                 filteredList.addAll(originalList);
             } else {
-                final String filterPattern = constraint.toString().toLowerCase().trim();
+                final String filterPattern = constraint.toString().toLowerCase(Locale.getDefault()).trim();
                 for (Quote q : originalList) {
-                    if (q.getAuthor().toLowerCase().contains(filterPattern)
-                            || q.getBookTitle().toLowerCase().contains(filterPattern)) {
+                    if (q.getAuthor().toLowerCase(Locale.getDefault()).contains(filterPattern)
+                            || q.getBookTitle().toLowerCase(Locale.getDefault()).contains(filterPattern)) {
                         filteredList.add(q);
                     }
                 }
@@ -149,7 +147,7 @@ public class TextQuoteRecyclerViewAdapter extends RecyclerView.Adapter<TextQuote
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            Log.d(TAG, "publishResults: Method CALLED.");
+
             viewAdapter.quoteTextList.clear();
             viewAdapter.quoteTextList.addAll((ArrayList<Quote>) results.values);
             viewAdapter.notifyDataSetChanged();//Without doesn't refresh list.
@@ -173,7 +171,7 @@ public class TextQuoteRecyclerViewAdapter extends RecyclerView.Adapter<TextQuote
             share.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d(TAG, "onClick: Share Called..");
+
                     Intent shareIntent = new Intent();
                     shareIntent.setAction(Intent.ACTION_SEND);
                     shareIntent.putExtra(Intent.EXTRA_TEXT, new StringFormatter().sendIntentText(quoteTextList.get(getAdapterPosition()).getQuote(), quoteTextList.get(getAdapterPosition()).getQuote()));
@@ -184,25 +182,24 @@ public class TextQuoteRecyclerViewAdapter extends RecyclerView.Adapter<TextQuote
             copy.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d(TAG, "onClick: Copy Called Adapter Position" + getAdapterPosition());
+
                     ClipboardManager clipboardManager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
                     ClipData clipData = ClipData.newPlainText("text", quoteTextList.get(getAdapterPosition()).getQuote().toString());
                     clipboardManager.setPrimaryClip(clipData);
                     if (clipData != null)
                         Toast.makeText(context, "Quote Copied...", Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "onClick: Copied Data : " + clipData.getItemAt(0));
+
                 }
             });
             edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d(TAG, "onClick: Edit Called Layout Position" + getLayoutPosition());
+
                     MainActivity mainActivity = (MainActivity) context;
 
                     Intent editIntent = new Intent(mainActivity, AddQuotesActivity.class);
                     editIntent.putExtra("quoteInfo", quoteTextList.get(getAdapterPosition()));
                     mainActivity.startActivity(editIntent);
-                    //  mainActivity.overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
 
                 }
             });
@@ -210,10 +207,17 @@ public class TextQuoteRecyclerViewAdapter extends RecyclerView.Adapter<TextQuote
             delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+
                     final int pos = getAdapterPosition();
                     final Quote quote = quoteTextList.get(pos);
                     removeItem(pos, quote);
-                    Snackbar snackbar = Snackbar.make(v, "Item was removed.", 2000);
+
+                    if (!deleteQuery.contains(quote)) {
+                        deleteQuery.add(quote);
+                    }
+
+                    final Snackbar snackbar = Snackbar.make(v, "Item was removed.", 2000);
                     snackbar.setAction("UNDO", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -233,9 +237,11 @@ public class TextQuoteRecyclerViewAdapter extends RecyclerView.Adapter<TextQuote
                             super.onDismissed(transientBottomBar, event);
                             if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
                                 quoteViewModel.delete(quote);
+
                             }
                         }
                     });
+
 
                 }
             });

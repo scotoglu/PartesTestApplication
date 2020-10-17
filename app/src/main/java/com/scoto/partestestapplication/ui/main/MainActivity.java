@@ -19,7 +19,7 @@ import com.scoto.partestestapplication.ui.textquote.QuotesList;
 
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "MainActivity";
+
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;

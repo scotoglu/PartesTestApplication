@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,15 +21,15 @@ import androidx.lifecycle.ViewModelProviders;
 import com.scoto.partestestapplication.R;
 import com.scoto.partestestapplication.data.model.Image;
 import com.scoto.partestestapplication.ui.Dialogs;
-import com.scoto.partestestapplication.ui.viewmodel.QuoteViewModel;
-import com.scoto.partestestapplication.utils.Constants;
+import com.scoto.partestestapplication.ui.viewmodel.ImageQuoteViewModel;
+import com.scoto.partestestapplication.utils.OperationTypeDef;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class AddImageQuotesActivity extends AppCompatActivity implements View.OnFocusChangeListener {
-    private static final String TAG = "AddImageQuotesActivity";
+
 
     private ImageView imageQuote;
     private ImageView focusAuthor, focusBookTitle, focusTag;
@@ -39,14 +38,15 @@ public class AddImageQuotesActivity extends AppCompatActivity implements View.On
     private Image image;
     private Uri imageUri;
     private String uri;
-    private QuoteViewModel quoteViewModel;
+    private ImageQuoteViewModel viewModel;
+    private Handler handler;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_image_quotes);
-        quoteViewModel = ViewModelProviders.of(this).get(QuoteViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(ImageQuoteViewModel.class);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -59,14 +59,12 @@ public class AddImageQuotesActivity extends AppCompatActivity implements View.On
 
         Bundle bundle = getIntent().getExtras();
 
-
+        handler = new Handler();
         //Adding
         if (bundle.getString("IMAGE_URI") != null) {
             imageUri = Uri.parse(bundle.getString("IMAGE_URI"));
 
             imageQuote.setImageURI(imageUri);
-        } else {
-            Log.d(TAG, "onCreate: ImageUri is empty");
         }
 
 
@@ -74,8 +72,6 @@ public class AddImageQuotesActivity extends AppCompatActivity implements View.On
         if (bundle.getParcelable("IMAGE_OBJ") != null) {
             image = (Image) bundle.getParcelable("IMAGE_OBJ");
             setDataToFields();
-        } else {
-            Log.d(TAG, "onCreate: Image is empty");
         }
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
@@ -107,7 +103,7 @@ public class AddImageQuotesActivity extends AppCompatActivity implements View.On
     }
 
     private void saveImageQuotes() {
-        Log.d(TAG, "saveImageQuotes: Called");
+
         String image_path;
         if (imageUri != null) {
             image_path = saveImageToFileSys();
@@ -121,22 +117,20 @@ public class AddImageQuotesActivity extends AppCompatActivity implements View.On
 
 
         if (author.isEmpty() || bookTitle.isEmpty()) {
-            Dialogs dialogs = Dialogs.newInstance(getString(R.string.empty_fields), Constants.OPERATION_CODE_EMPTY);
+            Dialogs dialogs = Dialogs.newInstance(getString(R.string.empty_fields), OperationTypeDef.EMPTY_FIELD);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             dialogs.show(ft, Dialogs.TAG);
         } else {
 
-            Log.d(TAG, "saveImageQuotes: else statement");
-
 
             if (imageUri != null) {
-                Log.d(TAG, "saveImageQuotes: ImageUri");
+
                 Image image = new Image(image_path, author, bookTitle, tag);
-                quoteViewModel.insertImage(image);
-                Dialogs dialogs = Dialogs.newInstance(getString(R.string.successfull_add), Constants.OPERATION_CODE_SUCCESS);
+                viewModel.insert(image);
+                Dialogs dialogs = Dialogs.newInstance(getString(R.string.successfull_add), OperationTypeDef.SUCCESS);
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 dialogs.show(ft, Dialogs.TAG);
-                new Handler().postDelayed(new Runnable() {
+                handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         finish();
@@ -144,15 +138,15 @@ public class AddImageQuotesActivity extends AppCompatActivity implements View.On
                 }, 1000);
 
             } else if (image != null) {
-                Log.d(TAG, "saveImageQuotes: image");
+
                 if (!author.isEmpty() || !bookTitle.isEmpty() || !tag.isEmpty()) {
                     Image updatedImage = new Image(image_path, author, bookTitle, tag);
                     updatedImage.setId(image.getId());
-                    quoteViewModel.updateImages(updatedImage);
-                    Dialogs dialogs = Dialogs.newInstance(getString(R.string.update), Constants.OPERATION_CODE_UPDATE);
+                    viewModel.update(updatedImage);
+                    Dialogs dialogs = Dialogs.newInstance(getString(R.string.update), OperationTypeDef.UPDATE);
                     FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                     dialogs.show(ft, Dialogs.TAG);
-                    new Handler().postDelayed(new Runnable() {
+                    handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             finish();
@@ -162,7 +156,6 @@ public class AddImageQuotesActivity extends AppCompatActivity implements View.On
             }
         }
 
-
     }
 
     private void setDataToFields() {
@@ -171,14 +164,12 @@ public class AddImageQuotesActivity extends AppCompatActivity implements View.On
             bookTitleTxt.setText(image.getBookTitle());
             tagTxt.setText(image.getQuoteTag());
             imageQuote.setImageBitmap(BitmapFactory.decodeFile(image.getPath()));
-        } else {
-            Log.d(TAG, "setDataToFields: Image is Empty");
         }
     }
 
 
     private String saveImageToFileSys() {
-        Log.d(TAG, "saveImageToFileSys: Active");
+
         String imageFileName = "Partes_" + System.currentTimeMillis() + ".jpg";
         String storageDir = this.getFilesDir().getPath();//Internal Storage
         File path = new File(storageDir, "/SavedImageQuotes");
@@ -192,29 +183,24 @@ public class AddImageQuotesActivity extends AppCompatActivity implements View.On
             fos = new FileOutputStream(outFile);
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-            Log.d(TAG, "saveImageToFileSys: OutFile: " + outFile);
+
             fos.flush();
             fos.close();
         } catch (IOException e) {
             String msg = e.getMessage();
             e.printStackTrace();
-            Log.d(TAG, "saveToImage: Error.... : " + msg);
+
         }
         return outFile.getPath();
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy: AddImageQuotesActivity...");
-    }
 
     // TODO, write a CustomView for EditText or ImageView for onFocusChangeListener
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (hasFocus) {
-            Log.d(TAG, "onFocusChange: Focused...");
+
             switch (v.getId()) {
 
                 case R.id.author:
@@ -230,7 +216,7 @@ public class AddImageQuotesActivity extends AppCompatActivity implements View.On
                     return;
             }
         } else {
-            Log.d(TAG, "onFocusChange: Loosing Focus...");
+
             switch (v.getId()) {
 
                 case R.id.author:
@@ -264,5 +250,13 @@ public class AddImageQuotesActivity extends AppCompatActivity implements View.On
         params.width = 0;
         params.height = 0;
         v.setLayoutParams(params);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (handler != null) {
+            handler = null;
+        }
     }
 }

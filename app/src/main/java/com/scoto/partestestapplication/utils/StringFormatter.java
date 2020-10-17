@@ -3,16 +3,15 @@ package com.scoto.partestestapplication.utils;
 import android.util.Log;
 
 public class StringFormatter {
-    private static final String TAG = "StringFormatter";
 
 
     public StringFormatter() {
         //Empty Constructor
-        Log.d(TAG, "StringFormatter: Called");
+
     }
 
     public String strConcat(String author, String date, String pageOf) {
-        Log.d(TAG, "strConcat: Method Called...");
+
 
         String dateDisplay, authorDisplay, pageOfDisplay;
 

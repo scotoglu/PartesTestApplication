@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">TestApp</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="quote_hint">Type Quote.</string>
     <string name="book_title_hint">Type Book Title.</string>
     <string name="author_hint">Type Author.</string>
@@ -9,29 +8,26 @@
     <string name="page_of_quote_hint">Type Page Of Quote.</string>
     <string name="release_date">Type Release Date.</string>
     <string name="btn_text">Save</string>
-    <string name="page">p</string>
     <string name="successfull_add">Successfully</string>
-    <string name="snackbar_item_remove">Item was removed from list</string>
-    <string name="title_activity_settings">SettingsActivity</string>
-
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
-
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
 
 
     <string name="empty_fields">Please, remember the quotes, author and book title.</string>
     <string name="update">Updated</string>
+    <string name="about_app">Partes application developed for saving quotes as a text and keeping as an image.</string>
+    <string name="gmail">scotoglu@gmail.com</string>
+    <string name="suggest_txt">For suggestion contact with me:</string>
+    <string name="logo_content_desc">Logo</string>
+
+
+    <string name="default_quote">Kapitalizm yalnızca sayabildiklerine değer verir ve yalnız dolarları sayabilir.</string>
+    <string name="default_author">Raj Patel</string>
+    <string name="default_book_title">Yedi Ucuz Şey Üzerinden Dünya Tarihi</string>
+    <string name="default_publisher">Kolektif Kitap</string>
+    <string name="default_release_date">2019</string>
+    <string name="default_page_of_quote">35</string>
+
+
+    <string name="default_img_tag">Kapitalizm</string>
 
 
 </resources>

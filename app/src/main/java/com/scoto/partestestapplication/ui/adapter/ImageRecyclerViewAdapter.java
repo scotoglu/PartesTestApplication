@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,18 +27,20 @@ import com.scoto.partestestapplication.databinding.ImageQuotesItemBinding;
 import com.scoto.partestestapplication.ui.imagequote.AddImageQuotesActivity;
 import com.scoto.partestestapplication.ui.imagequote.DisplayImageFullScreen;
 import com.scoto.partestestapplication.ui.main.MainActivity;
-import com.scoto.partestestapplication.ui.viewmodel.QuoteViewModel;
+import com.scoto.partestestapplication.ui.viewmodel.ImageQuoteViewModel;
+
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecyclerViewAdapter.ViewHolder> implements Filterable {
-    private static final String TAG = "ImageRecyclerViewAdapte";
+
     private Context mContext;
     private List<Image> imageQuotes;
     private List<Image> filteredList;
-    private QuoteViewModel quoteViewModel;
+    private ImageQuoteViewModel viewModel;
 
     private Fragment fr;
     private MyFilter myFilter;
@@ -50,7 +50,7 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
         this.mContext = context;
         this.fr = fragment;
         this.filteredList = new ArrayList<>();//Initialize the filtered list
-        quoteViewModel = ViewModelProviders.of(fragment).get(QuoteViewModel.class);
+        viewModel = ViewModelProviders.of(fragment).get(ImageQuoteViewModel.class);
     }
 
 
@@ -94,7 +94,7 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
 
     @Override
     public Filter getFilter() {
-        Log.d(TAG, "getFilter: CALLED");
+
         if (myFilter == null) {
             filteredList.clear();
             filteredList.addAll(imageQuotes);
@@ -120,18 +120,19 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
 
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            Log.d(TAG, "performFiltering: Method CALLED.");
+
+
             filteredList.clear();
             final FilterResults filterResults = new FilterResults();
             if (constraint.length() == 0) {
                 //Searching not started,yet
                 filteredList.addAll(originalList);
             } else {
-                final String filterPattern = constraint.toString().toLowerCase().trim();
+                final String filterPattern = constraint.toString().toLowerCase(Locale.getDefault()).trim();
                 for (Image img : originalList) {
-                    if (img.getQuoteTag().toLowerCase().contains(filterPattern)
-                            || img.getAuthor().toLowerCase().contains(filterPattern)
-                            || img.getBookTitle().toLowerCase().contains(filterPattern)) {
+                    if (img.getQuoteTag().toLowerCase(Locale.getDefault()).contains(filterPattern)
+                            || img.getAuthor().toLowerCase(Locale.getDefault()).contains(filterPattern)
+                            || img.getBookTitle().toLowerCase(Locale.getDefault()).contains(filterPattern)) {
                         filteredList.add(img);
                     }
                 }
@@ -143,7 +144,8 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            Log.d(TAG, "publishResults: Method CALLED.");
+
+
             imageRecyclerViewAdapter.imageQuotes.clear();
             imageRecyclerViewAdapter.imageQuotes.addAll((ArrayList<Image>) results.values);
             imageRecyclerViewAdapter.notifyDataSetChanged();
@@ -173,13 +175,10 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
                     Intent displayImageIntent = new Intent(mContext, DisplayImageFullScreen.class);
                     displayImageIntent.putExtra("IMAGE_OBJ", imageQuotes.get(getAdapterPosition()));
 
-                    if (Build.VERSION.SDK_INT > 20) {
-                        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(fr.getActivity(),
-                                imageView, ViewCompat.getTransitionName(imageView));
-                        mContext.startActivity(displayImageIntent, optionsCompat.toBundle());
-                    } else {
-                        mContext.startActivity(displayImageIntent);
-                    }
+
+                    ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(fr.getActivity(),
+                            imageView, ViewCompat.getTransitionName(imageView));
+                    mContext.startActivity(displayImageIntent, optionsCompat.toBundle());
 
                 }
             });
@@ -189,9 +188,11 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
                     int pos = getAdapterPosition();
 
                     MainActivity mainActivity = (MainActivity) mContext;
+
                     Intent editIntent = new Intent(mainActivity, AddImageQuotesActivity.class);
                     editIntent.putExtra("IMAGE_OBJ", imageQuotes.get(pos));
                     mainActivity.startActivity(editIntent);
+
 
                 }
             });
@@ -202,9 +203,6 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
 
                     File imageFile = new File(imageQuotes.get(pos).getPath());
                     Uri uri = FileProvider.getUriForFile(mContext, BuildConfig.APPLICATION_ID + ".provider", imageFile);//targetSdkVersion=>24 File Provider
-
-                    Log.d(TAG, "onClick: getPath: " + imageQuotes.get(pos).getPath());
-                    Log.d(TAG, "onClick: uritoString " + uri.toString());
 
 
                     Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -234,16 +232,17 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
                         @Override
                         public void onShown(Snackbar sb) {
                             super.onShown(sb);
-                            Log.d(TAG, "onShown: Snackbar on shown");
                         }
 
                         @Override
                         public void onDismissed(Snackbar transientBottomBar, int event) {
                             super.onDismissed(transientBottomBar, event);
-                            Log.d(TAG, "onDismissed: Snackbar on dismissed");
                             if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
-                                Log.d(TAG, "onDismissed: TIMEOUT");
-                                quoteViewModel.deleteImages(img);
+                                viewModel.delete(img);
+                                File file = new File(img.getPath());
+                                if (file.exists()) {
+                                    file.delete();
+                                }
                             }
                         }
                     });

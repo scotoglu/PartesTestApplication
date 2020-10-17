@@ -16,7 +16,6 @@ public class QuoteRepository {
 
     private QuoteDao quoteDao;
     private ImageDao imageDao;
-    private static final String TAG = "QuoteRepository";
     private LiveData<List<Quote>> allQuotes;
     private LiveData<List<Image>> allImages;
 
@@ -65,8 +64,7 @@ public class QuoteRepository {
         imageDao.deleteAllImages();
     }
 
-    public void deleteImages(Image image
-    ) {
+    public void deleteImages(Image image) {
         imageDao.deleteImage(image);
     }
 

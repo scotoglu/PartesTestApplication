@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,13 +17,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.scoto.partestestapplication.utils.OperationTypeDef;
 import com.scoto.partestestapplication.R;
 import com.scoto.partestestapplication.data.model.Quote;
 import com.scoto.partestestapplication.ui.Dialogs;
 import com.scoto.partestestapplication.ui.viewmodel.QuoteViewModel;
 
 public class AddQuotesActivity extends AppCompatActivity implements View.OnFocusChangeListener {
-    private static final String TAG = "AddQuotesActivity";
+
 
     private EditText quoteTxt, authorTxt, bookTitleTxt, pageOfQuoteTxt, releaseDateTxt, publisherTxt;
     private String quote, author, bookTitle, pageOfQuote, releaseDate, publisher;
@@ -113,19 +113,17 @@ public class AddQuotesActivity extends AppCompatActivity implements View.OnFocus
 
                     if (quote.isEmpty() || author.isEmpty() || bookTitle.isEmpty()) {
 
-                        dialogs = Dialogs.newInstance(getString(R.string.empty_fields), -1);
+                        dialogs = Dialogs.newInstance(getString(R.string.empty_fields), OperationTypeDef.EMPTY_FIELD);
                         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                         dialogs.show(ft, Dialogs.TAG);
-//                        Toast.makeText(AddQuotesActivity.this, "Quote, Author or Book Title can't be empty.", Toast.LENGTH_SHORT).show();
-
 
                     } else {
 
                         Quote data = new Quote(quote, author, bookTitle, pageOfQuote, publisher, releaseDate);
                         quoteViewModel.insert(data);
 
-                        Log.d(TAG, "onClick: INSERT OPERATION");
-                        dialogs = Dialogs.newInstance(getString(R.string.successfull_add), 1);
+
+                        dialogs = Dialogs.newInstance(getString(R.string.successfull_add), OperationTypeDef.SUCCESS);
                         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                         dialogs.show(ft, Dialogs.TAG);
                         finish();
@@ -135,7 +133,7 @@ public class AddQuotesActivity extends AppCompatActivity implements View.OnFocus
                 } else {
 
                     if (quote.isEmpty() || author.isEmpty() || bookTitle.isEmpty()) {
-                        dialogs = Dialogs.newInstance(getString(R.string.empty_fields), -1);
+                        dialogs = Dialogs.newInstance(getString(R.string.empty_fields), OperationTypeDef.EMPTY_FIELD);
                         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                         dialogs.show(ft, Dialogs.TAG);
                     } else {
@@ -145,8 +143,8 @@ public class AddQuotesActivity extends AppCompatActivity implements View.OnFocus
                         );
                         data.setId(passedQuote.getId());
                         quoteViewModel.update(data);
-                        Log.d(TAG, "onClick: UPDATE OPERATION");
-                        dialogs = Dialogs.newInstance("Updated", 2);
+
+                        dialogs = Dialogs.newInstance("Updated", OperationTypeDef.UPDATE);
                         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                         dialogs.show(ft, Dialogs.TAG);
                         finish();
@@ -165,7 +163,7 @@ public class AddQuotesActivity extends AppCompatActivity implements View.OnFocus
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (hasFocus) {
-            Log.d(TAG, "onFocusChange: Focused...");
+
             switch (v.getId()) {
                 case R.id.quote:
                     setImageViewParams(quoteImageView);
@@ -189,7 +187,7 @@ public class AddQuotesActivity extends AppCompatActivity implements View.OnFocus
                     return;
             }
         } else {
-            Log.d(TAG, "onFocusChange: Loosing Focus...");
+
             switch (v.getId()) {
                 case R.id.quote:
                     resetImageViewParams(quoteImageView);

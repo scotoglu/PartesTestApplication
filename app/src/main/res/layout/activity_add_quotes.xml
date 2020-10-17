@@ -73,7 +73,7 @@
                 android:id="@+id/remainChar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
                 android:hint="0 / 220"
                 android:padding="2dp" />
         </LinearLayout>
@@ -98,6 +98,7 @@
             </LinearLayout>
 
             <EditText
+                android:autofillHints=""
                 android:id="@+id/author"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

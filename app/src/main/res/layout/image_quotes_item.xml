@@ -90,7 +90,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:orientation="horizontal"
-                        android:padding="2dp">
+                        android:padding="5dp">
 
                         <ImageView
                             android:id="@+id/editImageQuote"

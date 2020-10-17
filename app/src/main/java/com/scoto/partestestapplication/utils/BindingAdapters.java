@@ -11,6 +11,8 @@ import androidx.databinding.BindingAdapter;
 
 import com.github.chrisbanes.photoview.PhotoView;
 
+import java.util.Locale;
+
 public class BindingAdapters {
 
     @BindingAdapter("setImage")
@@ -41,7 +43,7 @@ public class BindingAdapters {
     @BindingAdapter("setTag")
     public static void setCustomText(TextView customText, String tag) {
         if (!tag.isEmpty()) {
-            customText.setText("#" + tag.toLowerCase());
+            customText.setText("#" + tag.toLowerCase(Locale.getDefault()));
             customText.setTextColor(Color.RED);
         } else {
             customText.setText(" ");

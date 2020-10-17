@@ -1,13 +1,16 @@
 package com.scoto.partestestapplication.ui.about;
 
+import android.os.Bundle;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.os.Bundle;
-
+import com.scoto.partestestapplication.BuildConfig;
 import com.scoto.partestestapplication.R;
 
 public class ActivityAbout extends AppCompatActivity {
+    private TextView versionTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +22,13 @@ public class ActivityAbout extends AppCompatActivity {
 
         getSupportActionBar().setTitle("About App");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        versionTxt = findViewById(R.id.version);
+
+        String versionName = BuildConfig.VERSION_NAME;
+        versionTxt.setText(versionName);
+
 
     }
 }

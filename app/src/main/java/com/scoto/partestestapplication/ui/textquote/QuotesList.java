@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,7 +32,7 @@ import java.util.List;
 
 
 public class QuotesList extends Fragment implements View.OnClickListener {
-    private static final String TAG = "QuotesList";
+
 
     private FloatingActionButton addTxtQuote;
     private RecyclerView recyclerView;
@@ -40,7 +41,7 @@ public class QuotesList extends Fragment implements View.OnClickListener {
     private QuoteViewModel quoteViewModel;
     private FrameLayout frameLayout;
 
-    private LinearLayout emptyList;
+    private TextView emptyList;
     private MenuItem menuItem;
     private SearchView searchView;
 
@@ -52,7 +53,7 @@ public class QuotesList extends Fragment implements View.OnClickListener {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate: ACTIVE");
+
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
@@ -60,7 +61,7 @@ public class QuotesList extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView: ACTIVE");
+
         View v = inflater.inflate(R.layout.fragment_quotes_list, container, false);
         recyclerView = v.findViewById(R.id.recyclerView);
         emptyList = v.findViewById(R.id.empty_and_add);
@@ -79,7 +80,7 @@ public class QuotesList extends Fragment implements View.OnClickListener {
 
 
     private void setRecyclerViewList() {
-        Log.d(TAG, "setRecyclerViewList: Active...");
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         viewAdapter = new TextQuoteRecyclerViewAdapter(this);
@@ -104,7 +105,6 @@ public class QuotesList extends Fragment implements View.OnClickListener {
         quoteViewModel.getAllQuotes().observe(getViewLifecycleOwner(), new Observer<List<Quote>>() {
             @Override
             public void onChanged(List<Quote> quoteList) {
-                Log.d(TAG, "onChanged: Observe Called...");
                 viewAdapter.setQuoteList(quoteList);
                 viewAdapter.setContext(getContext());
                 viewAdapter.notifyDataSetChanged();
@@ -130,14 +130,14 @@ public class QuotesList extends Fragment implements View.OnClickListener {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Log.d(TAG, "onQueryTextSubmit: CALLED....");
+
 
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Log.d(TAG, "onQueryTextChange: CALLED...");
+
                 viewAdapter.getFilter().filter(newText);
                 return true;
             }
@@ -149,7 +149,7 @@ public class QuotesList extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume: ");
+
         if (menuItem != null) {
             menuItem.collapseActionView();
         }

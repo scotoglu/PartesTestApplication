@@ -28,7 +28,10 @@
         <activity
             android:name=".ui.about.ActivityAbout"
             android:parentActivityName=".ui.main.MainActivity" />
-        <activity android:name=".ui.splash.SplashScreenActivity">
+        <activity
+            android:name=".ui.splash.SplashScreenActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Transparent">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -42,10 +45,10 @@
             android:theme="@style/Theme.AppCompat" />
         <activity
             android:name=".ui.main.MainActivity"
-            android:windowSoftInputMode="adjustPan">
+            android:screenOrientation="portrait">
             <intent-filter>
 
-            <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity

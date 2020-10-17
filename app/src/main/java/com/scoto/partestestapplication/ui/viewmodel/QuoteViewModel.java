@@ -15,15 +15,13 @@ import java.util.List;
 public class QuoteViewModel extends AndroidViewModel {
     private QuoteRepository repository;
     private LiveData<List<Quote>> allQuotes;
-    private LiveData<List<Image>> allImages;
-
 
     public QuoteViewModel(@NonNull Application application) {
         super(application);
         repository = new QuoteRepository(application);
         allQuotes = repository.getAllQuotes();
-        allImages = repository.getAllImages();
     }
+
 
     public void insert(Quote quote) {
         repository.insert(quote);
@@ -49,29 +47,5 @@ public class QuoteViewModel extends AndroidViewModel {
     public int getQuotesNum() {
         return repository.getQuotesNum();
     }
-    /*  image CRUD operations in ViewModel*/
 
-    public void deleteAllImages() {
-        repository.deleteAllImages();
-    }
-
-    public void deleteImages(Image image) {
-        repository.deleteImages(image);
-    }
-
-    public void updateImages(Image image) {
-        repository.updateImages(image);
-    }
-
-    public void insertImage(Image image) {
-        repository.insertImage(image);
-    }
-
-    public LiveData<List<Image>> getAllImages() {
-        return allImages;
-    }
-
-    public int getImageQuoteNum() {
-        return repository.getImageQuoteNum();
-    }
 }
