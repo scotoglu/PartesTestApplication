@@ -4,7 +4,6 @@ package com.scoto.partestestapplication.ui.imagequote;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,7 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +30,6 @@ import com.scoto.partestestapplication.R;
 import com.scoto.partestestapplication.data.model.Image;
 import com.scoto.partestestapplication.ui.adapter.ImageRecyclerViewAdapter;
 import com.scoto.partestestapplication.ui.viewmodel.ImageQuoteViewModel;
-
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -42,7 +40,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class ImageQuotesList extends Fragment implements View.OnClickListener {
 
-
+    private ProgressBar progressBar;
     private FloatingActionButton addImgQuote;
     private RecyclerView recyclerView;
     private ImageRecyclerViewAdapter viewAdapter;
@@ -68,10 +66,12 @@ public class ImageQuotesList extends Fragment implements View.OnClickListener {
             public void onChanged(List<Image> imageList) {
 
                 viewAdapter.setImageList(imageList);
-                if (imageList.size() > 0)
+                if (imageList.size() > 0) {
                     setEmptyList(false);
-                else
+                } else {
                     setEmptyList(true);
+                }
+                progressBar.setVisibility(View.INVISIBLE);
             }
         });
     }
@@ -96,6 +96,8 @@ public class ImageQuotesList extends Fragment implements View.OnClickListener {
         addImgQuote = v.findViewById(R.id.addImgQuote);
         addImgQuote.setOnClickListener(this);
 
+        progressBar = v.findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
         setRecyclerView();
 
         return v;
@@ -129,7 +131,7 @@ public class ImageQuotesList extends Fragment implements View.OnClickListener {
 
         final MenuItem item = menu.findItem(R.id.search);
         final SearchView searchView = (SearchView) item.getActionView();
-        searchView.setQueryHint("Search Author, BookTitle or Tag.");
+        searchView.setQueryHint("Author, BookTitle or Tag.");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -151,7 +153,6 @@ public class ImageQuotesList extends Fragment implements View.OnClickListener {
 
 
     private void setRecyclerView() {
-
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         viewAdapter = new ImageRecyclerViewAdapter(getContext(), imageList, this);

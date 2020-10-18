@@ -2,7 +2,6 @@ package com.scoto.partestestapplication.ui.textquote;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -10,7 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -34,6 +33,7 @@ import java.util.List;
 public class QuotesList extends Fragment implements View.OnClickListener {
 
 
+    private ProgressBar progressBar;
     private FloatingActionButton addTxtQuote;
     private RecyclerView recyclerView;
     private TextQuoteRecyclerViewAdapter viewAdapter;
@@ -73,6 +73,9 @@ public class QuotesList extends Fragment implements View.OnClickListener {
 
         addTxtQuote.setOnClickListener(this);
 
+
+        progressBar = v.findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
         setRecyclerViewList();
 
         return v;
@@ -91,10 +94,11 @@ public class QuotesList extends Fragment implements View.OnClickListener {
     }
 
     private void setEmptyList(boolean isVisible) {
-        if (!isVisible)
+        if (!isVisible) {
             emptyList.setVisibility(View.VISIBLE);
-        else
+        } else {
             emptyList.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -108,14 +112,15 @@ public class QuotesList extends Fragment implements View.OnClickListener {
                 viewAdapter.setQuoteList(quoteList);
                 viewAdapter.setContext(getContext());
                 viewAdapter.notifyDataSetChanged();
-
-                if (quoteList.size() <= 0)
+                if (quoteList.size() <= 0) {
                     setEmptyList(false);
-                else
+                } else {
                     setEmptyList(true);
-
+                }
+                progressBar.setVisibility(View.INVISIBLE);
             }
         });
+
     }
 
 
@@ -126,7 +131,7 @@ public class QuotesList extends Fragment implements View.OnClickListener {
 
         final MenuItem item = menu.findItem(R.id.search);
         searchView = (SearchView) item.getActionView();
-        searchView.setQueryHint("Search Author or BookTitle.");
+        searchView.setQueryHint("Author or BookTitle.");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

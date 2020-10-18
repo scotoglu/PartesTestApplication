@@ -49,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), 0);
 
 
-        viewPagerAdapter.addFragment(quotesList, "Quotes");
-        viewPagerAdapter.addFragment(imageQuotesList, "image List");
+        viewPagerAdapter.addFragment(quotesList, getApplicationContext().getResources().getString(R.string.tab_text_quote));
+        viewPagerAdapter.addFragment(imageQuotesList, getApplicationContext().getResources().getString(R.string.tab_image_quote));
 
         viewPager.setAdapter(viewPagerAdapter);
 

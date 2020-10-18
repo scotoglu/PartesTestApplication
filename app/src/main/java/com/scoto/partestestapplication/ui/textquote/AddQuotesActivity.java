@@ -97,7 +97,7 @@ public class AddQuotesActivity extends AppCompatActivity implements View.OnFocus
         remainChar = findViewById(R.id.remainChar);
 
 
-        getSupportActionBar().setTitle("Add Quote");
+        getSupportActionBar().setTitle(getApplication().getResources().getString(R.string.add_new_quote));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 

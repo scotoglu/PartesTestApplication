@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">TestApp</string>
 
-    <string name="quote_hint">Type Quote.</string>
-    <string name="book_title_hint">Type Book Title.</string>
-    <string name="author_hint">Type Author.</string>
-    <string name="publisher_hint">Type Publisher.</string>
-    <string name="page_of_quote_hint">Type Page Of Quote.</string>
-    <string name="release_date">Type Release Date.</string>
+    <string name="quote_hint">Quote.</string>
+    <string name="book_title_hint">Book Title.</string>
+    <string name="author_hint">Author.</string>
+    <string name="publisher_hint">Publisher.</string>
+    <string name="page_of_quote_hint">Page Of Quote.</string>
+    <string name="release_date">Release Date.</string>
     <string name="btn_text">Save</string>
     <string name="successfull_add">Successfully</string>
 
@@ -18,7 +18,6 @@
     <string name="suggest_txt">For suggestion contact with me:</string>
     <string name="logo_content_desc">Logo</string>
 
-
     <string name="default_quote">Kapitalizm yalnızca sayabildiklerine değer verir ve yalnız dolarları sayabilir.</string>
     <string name="default_author">Raj Patel</string>
     <string name="default_book_title">Yedi Ucuz Şey Üzerinden Dünya Tarihi</string>
@@ -28,6 +27,10 @@
 
 
     <string name="default_img_tag">Kapitalizm</string>
+    <string name="add_new_quote">Add Quote</string>
+    <string name="tab_text_quote">Quotes</string>
+    <string name="tab_image_quote">Image Quotes</string>
+    <string name="actionbar_image_add_quote">Add Quote As Image</string>
 
 
 </resources>

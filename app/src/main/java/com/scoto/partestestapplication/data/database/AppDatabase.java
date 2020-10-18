@@ -1,11 +1,13 @@
 package com.scoto.partestestapplication.data.database;
 
+import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
@@ -23,33 +25,44 @@ import java.io.IOException;
 @Database(entities = {Quote.class, Image.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     private static String DB_NAME = "partes_test.db";
-    private static Context mContext;
+    private static Application mApplication;
 
     public abstract QuoteDao quoteDao();
 
     public abstract ImageDao imageDao();
 
     private static AppDatabase INSTANCE;
-    private static RoomDatabase.Callback callback = new Callback() {
-        @Override
-        public void onCreate(@NonNull SupportSQLiteDatabase db) {
-            super.onCreate(db);
-            insertTextQuote(db);//To prepopulate db with text quote
-            insertImageQuote(db);//To prepopulate db with image quote
-        }
-    };
 
 
     protected AppDatabase() {
     }
 
-    public static synchronized AppDatabase getINSTANCE(Context context) {
-        mContext = context;
+    private static RoomDatabase.Callback callback = new Callback() {
+        @Override
+        public void onCreate(@NonNull SupportSQLiteDatabase db) {
+            super.onCreate(db);
+
+            insertTextQuote(db);//To prepopulate db with text quote
+            insertImageQuote(db);//To prepopulate db with image quote
+
+
+        }
+
+        @Override
+        public void onOpen(@NonNull SupportSQLiteDatabase db) {
+            super.onOpen(db);
+
+        }
+    };
+
+    public static synchronized AppDatabase getINSTANCE(Application application) {
+        mApplication = application;
         if (INSTANCE == null) {
-            INSTANCE = createAppDb(context);
+            INSTANCE = createAppDb(application);
         }
         return INSTANCE;
     }
+
 
     private static AppDatabase createAppDb(final Context context) {
         return Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, DB_NAME)
@@ -60,17 +73,13 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 
     private static void insertTextQuote(SupportSQLiteDatabase db) {
-        String quote = mContext.getResources().getString(R.string.default_quote);
-        String author = mContext.getResources().getString(R.string.default_author);
-        ;
-        String bookTitle = mContext.getResources().getString(R.string.default_book_title);
-        ;
-        String publisher = mContext.getResources().getString(R.string.default_publisher);
-        ;
-        String pageOfQuote = mContext.getResources().getString(R.string.default_page_of_quote);
-        ;
-        String releaseDate = mContext.getResources().getString(R.string.default_release_date);
-        ;
+        String quote = mApplication.getResources().getString(R.string.default_quote);
+        String author = mApplication.getResources().getString(R.string.default_author);
+        String bookTitle = mApplication.getResources().getString(R.string.default_book_title);
+        String publisher = mApplication.getResources().getString(R.string.default_publisher);
+        String pageOfQuote = mApplication.getResources().getString(R.string.default_page_of_quote);
+        String releaseDate = mApplication.getResources().getString(R.string.default_release_date);
+
         long created_at = getTimestamp();
 
 
@@ -86,17 +95,16 @@ public abstract class AppDatabase extends RoomDatabase {
         sqLiteStatement.bindString(6, publisher);
         sqLiteStatement.bindString(7, releaseDate);
         sqLiteStatement.bindLong(8, created_at);
+
         sqLiteStatement.executeInsert();
+        
     }
 
     private static void insertImageQuote(SupportSQLiteDatabase db) {
         String path = drawableToFile();
-        String author = mContext.getResources().getString(R.string.default_author);
-        ;
-        String bookTitle = mContext.getResources().getString(R.string.default_book_title);
-        ;
-        String tag = mContext.getResources().getString(R.string.default_img_tag);
-        ;
+        String author = mApplication.getResources().getString(R.string.default_author);
+        String bookTitle = mApplication.getResources().getString(R.string.default_book_title);
+        String tag = mApplication.getResources().getString(R.string.default_img_tag);
         long created_at = getTimestamp();
 
         String sql = "INSERT INTO table_images(q_id,image_path,author,book_title,quote_tag,timestamp)" +
@@ -108,14 +116,17 @@ public abstract class AppDatabase extends RoomDatabase {
         statement.bindString(4, bookTitle);
         statement.bindString(5, tag);
         statement.bindLong(6, created_at);
+
         statement.executeInsert();
+
     }
 
+    @SuppressWarnings("")
     private static String drawableToFile() {
-        Drawable drawable = mContext.getDrawable(R.drawable.sample);
+        Drawable drawable = ContextCompat.getDrawable(mApplication, R.drawable.sample);
         Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
         String fileName = "Default_" + System.currentTimeMillis() + ".webp";
-        String storageDir = mContext.getFilesDir().getPath();//Internal Storage
+        String storageDir = mApplication.getFilesDir().getPath();//Internal Storage
         File path = new File(storageDir, "/Default");
 
         if (!path.exists()) {

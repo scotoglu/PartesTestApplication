@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -53,7 +54,7 @@ public class AddImageQuotesActivity extends AppCompatActivity implements View.On
 
         setViewReference();
 
-        getSupportActionBar().setTitle("Add Quote As Image");
+        getSupportActionBar().setTitle(getApplicationContext().getResources().getString(R.string.actionbar_image_add_quote));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 

@@ -174,7 +174,7 @@ public class TextQuoteRecyclerViewAdapter extends RecyclerView.Adapter<TextQuote
 
                     Intent shareIntent = new Intent();
                     shareIntent.setAction(Intent.ACTION_SEND);
-                    shareIntent.putExtra(Intent.EXTRA_TEXT, new StringFormatter().sendIntentText(quoteTextList.get(getAdapterPosition()).getQuote(), quoteTextList.get(getAdapterPosition()).getQuote()));
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, new StringFormatter().sendIntentText(quoteTextList.get(getAdapterPosition()).getQuote(), quoteTextList.get(getAdapterPosition()).getAuthor()));
                     shareIntent.setType("text/plain");
                     context.startActivity(Intent.createChooser(shareIntent, "Quote"));
                 }

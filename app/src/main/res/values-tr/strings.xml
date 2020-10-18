@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TestApp</string>
+    <string name="quote_hint">Alıntı</string>
+    <string name="book_title_hint">Kitap Adı</string>
+    <string name="author_hint">Yazar</string>
+    <string name="publisher_hint">Basımevi</string>
+    <string name="page_of_quote_hint">Alıntının Sayfası</string>
+    <string name="release_date">Basım Tarihi</string>
+    <string name="btn_text">Kaydet</string>
+    <string name="successfull_add">Başarılı</string>
+    <string name="empty_fields">Lütfen, alıntı,yazar ve kitap adını hatırlayın.</string>
+    <string name="update">Güncellendi</string>
+    <string name="add_new_quote">Alıntı Ekle</string>
+    <string name="tab_text_quote">Alıntılar</string>
+    <string name="tab_image_quote">Görüntü</string>
+    <string name="actionbar_image_add_quote">Fotoğraf Alıntısı</string>
+</resources>

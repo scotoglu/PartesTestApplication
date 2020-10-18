@@ -54,7 +54,7 @@
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:padding="10dp"
-            android:src="@drawable/castle"
+            android:src="@drawable/sample"
             android:transitionName="explode_image" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
