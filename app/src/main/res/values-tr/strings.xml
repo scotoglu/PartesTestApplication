@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">TestApp</string>
+    <string name="app_name">Quote Memory</string>
     <string name="quote_hint">Alıntı</string>
     <string name="book_title_hint">Kitap Adı</string>
     <string name="author_hint">Yazar</string>
@@ -15,4 +15,6 @@
     <string name="tab_text_quote">Alıntılar</string>
     <string name="tab_image_quote">Görüntü</string>
     <string name="actionbar_image_add_quote">Fotoğraf Alıntısı</string>
+    <string name="tag_hint">Etiket</string>
+    <string name="app_splash_">Alıntıları Resim ve Metin Olarak Kaydet</string>
 </resources>

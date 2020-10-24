@@ -8,11 +8,11 @@
 
         <variable
             name="quote"
-            type="com.scoto.testapp.model.Quote" />
+            type="com.scoto.quotememory.data.model.Quote" />
 
         <variable
             name="formatter"
-            type="com.scoto.testapp.controller.StringFormatter" />
+            type="com.scoto.quotememory.utils.StringFormatter" />
     </data>
 
     <androidx.cardview.widget.CardView

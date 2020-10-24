@@ -7,7 +7,7 @@
 
         <variable
             name="Image"
-            type="com.scoto.partestestapplication.data.model.Image" />
+            type="com.scoto.quotememory.data.model.Image" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,17 +25,16 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
             android:layout_marginTop="25dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
             android:hint="Author,BookTitle"
             android:maxWidth="200dp"
-            android:textAlignment="center"
+            android:textAlignment="viewStart"
             android:textColor="#FFF"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:textAlignment="center"
             android:id="@+id/tagTxt"
             setTag="@{Image.quoteTag}"
             android:layout_width="wrap_content"
@@ -43,6 +42,7 @@
             android:layout_marginTop="25dp"
             android:layout_marginEnd="15dp"
             android:hint="TAG_OF_QUOTE"
+            android:textAlignment="textEnd"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -53,7 +53,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
-            android:padding="10dp"
+            android:paddingHorizontal="10dp"
+            android:scaleType="fitCenter"
             android:src="@drawable/sample"
             android:transitionName="explode_image" />
 

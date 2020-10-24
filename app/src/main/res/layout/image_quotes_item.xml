@@ -7,7 +7,7 @@
 
         <variable
             name="imagesQuote"
-            type="com.scoto.partestestapplication.data.model.Image" />
+            type="com.scoto.quotememory.data.model.Image" />
 
     </data>
 

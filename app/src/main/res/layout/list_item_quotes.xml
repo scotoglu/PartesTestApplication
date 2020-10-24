@@ -8,11 +8,11 @@
 
         <variable
             name="item"
-            type="com.scoto.partestestapplication.data.model.Quote" />
+            type="com.scoto.quotememory.data.model.Quote" />
 
         <variable
             name="strFormat"
-            type="com.scoto.partestestapplication.utils.StringFormatter" />
+            type="com.scoto.quotememory.utils.StringFormatter" />
     </data>
 
     <RelativeLayout

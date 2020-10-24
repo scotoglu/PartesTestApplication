@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TestApp</string>
+    <string name="app_name">Quote Memory</string>
 
     <string name="quote_hint">Quote.</string>
     <string name="book_title_hint">Book Title.</string>
@@ -31,6 +31,8 @@
     <string name="tab_text_quote">Quotes</string>
     <string name="tab_image_quote">Image Quotes</string>
     <string name="actionbar_image_add_quote">Add Quote As Image</string>
+    <string name="tag_hint">Tag</string>
+    <string name="app_splash_">Save Quotes as Image and Text</string>
 
 
 </resources>
